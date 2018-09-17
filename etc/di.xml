@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+
+    <preference for="\MageSuite\Frontend\Service\Breadcrumb\BreadcrumbCategoryFinderInterface"
+                type="\MageSuite\Frontend\Service\Breadcrumb\FirstCategoryFinder"/>
+
+    <preference for="\Magento\Catalog\Model\Product\Image"
+                type="\MageSuite\Frontend\Model\Product\Image"/>
+
+    <preference for="\Magento\ConfigurableProduct\Model\Product\Type\Configurable"
+                type="\MageSuite\Frontend\Model\Product\Type\Configurable"/>
+
+    <preference for="\MageSuite\Frontend\Service\AssetLocator"
+                type="\MageSuite\Frontend\Service\MagentoAssetLocator"/>
+
+    <preference for="\MageSuite\Frontend\Service\Image\Optimizer"
+                type="\MageSuite\Frontend\Service\Image\CommandLine\Optimizer"/>
+
+    <preference for="\Magento\Catalog\Model\Indexer\Category\Product\Action\Full"
+                type="\MageSuite\Frontend\Model\Indexer\Category\Product\Action\Full"/>
+
+    <preference for="\Magento\Catalog\Controller\Adminhtml\Category\Save"
+                type="\MageSuite\Frontend\Controller\Adminhtml\Category\Save"/>
+
+    <preference for="\Magento\Catalog\Pricing\Price\MinimalPriceCalculatorInterface"
+                type="\MageSuite\Frontend\Pricing\Price\MinimalFinalPriceCalculator" />
+
+    <preference for="\Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator"
+                type="\MageSuite\Frontend\Model\CategoryUrlRewriteGenerator"/>
+
+    <type name="Magento\Catalog\Model\Category\Attribute\Backend\Image">
+        <plugin name="resize_category_image_teaser" type="\MageSuite\Frontend\Plugin\ResizeCategoryImageTeaser"
+                sortOrder="10"/>
+    </type>
+
+    <type name="\Magento\Cms\Model\Wysiwyg\Images\Storage">
+        <plugin name="optimize_wysiwyg_image" type="\MageSuite\Frontend\Plugin\OptimizeWysiwygImage"
+                sortOrder="10"/>
+        <plugin name="resize_wysiwyg_image" type="\MageSuite\Frontend\Plugin\ResizeWysiwygImage"
+                sortOrder="20"/>
+    </type>
+
+    <type name="\Magento\Framework\View\Design\Theme\Customization\Path">
+        <plugin name="disable_reading_customization_from_media_directory"
+                type="\MageSuite\Frontend\Plugin\DisableCustomViewConfigPath" sortOrder="1"/>
+    </type>
+
+    <type name="\Magento\Framework\View\Asset\MergeService">
+        <plugin name="disable_clean_merged_js_css"
+                type="\MageSuite\Frontend\Plugin\DisableCleanMergedJsCss" sortOrder="1"/>
+    </type>
+
+    <type name="\Magento\Catalog\Model\Category\DataProvider">
+        <plugin name="update_category_images_data"
+                type="\MageSuite\Frontend\Plugin\UpdateCategoryImagesData"
+                sortOrder="1"/>
+    </type>
+
+    <type name="\Magento\Framework\View\Page\Config">
+        <plugin name="update_html_lang_attribute" type="\MageSuite\Frontend\Plugin\UpdateHtmlLangAttribute"
+                sortOrder="1"/>
+    </type>
+
+    <type name="Magento\Framework\App\FrontControllerInterface">
+        <plugin name="refresh_messages" type="\MageSuite\Frontend\Plugin\RefreshMessages"/>
+    </type>
+
+    <type name="Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable">
+        <plugin name="sort_attribute_options" type="\MageSuite\Frontend\Plugin\SortAttributeOptions"/>
+    </type>
+
+    <type name="Magento\Store\Block\Switcher">
+        <plugin name="switch_storeview_replace_url"
+                type="\MageSuite\Frontend\Plugin\SwitchStoreViewReplaceUrl"/>
+    </type>
+
+    <type name="Magento\GoogleAnalytics\Block\Ga">
+        <plugin name="add_google_optimize_container_id"
+                type="MageSuite\Frontend\Plugin\AddGoogleOptimizeContainerIdToJs"/>
+    </type>
+
+    <type name="Magento\Catalog\Block\Product\ListProduct">
+        <plugin name="category_view_change" type="MageSuite\Frontend\Plugin\CategoryView" />
+    </type>
+
+    <type name="Magento\Catalog\Helper\Product\ProductList">
+        <plugin name="category_view_switcher" type="MageSuite\Frontend\Plugin\CategoryViewSwitcher" />
+    </type>
+
+    <type name="Magento\Wishlist\Controller\AbstractIndex">
+        <plugin name="add_information_message_before_login" type="MageSuite\Frontend\Plugin\Wishlist\AddInformationMessageBeforeLogin" sortOrder="5"/>
+    </type>
+
+    <type name="Magento\ProductAlert\Controller\Add">
+        <plugin name="add_information_message_before_login" type="MageSuite\Frontend\Plugin\ProductAlert\AddInformationMessageBeforeLogin" sortOrder="5"/>
+    </type>
+
+    <type name="Magento\Framework\HTTP\PhpEnvironment\RemoteAddress">
+        <arguments>
+            <argument name="alternativeHeaders" xsi:type="array">
+                <item name="x-forwarded-for" xsi:type="string">HTTP_X_FORWARDED_FOR</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="ImageOptimizer\OptimizerFactory">
+        <arguments>
+            <argument name="options" xsi:type="array">
+                <item name="jpegoptim_options" xsi:type="array">
+                    <item name="0" xsi:type="string">--strip-all</item>
+                    <item name="1" xsi:type="string">--all-progressive</item>
+                    <item name="2" xsi:type="string">--max=80</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Cms\Model\Wysiwyg\Images\Storage">
+        <arguments>
+            <argument name="extensions" xsi:type="array">
+                <item name="allowed" xsi:type="array">
+                    <item name="svg" xsi:type="number">1</item>
+                </item>
+                <item name="image_allowed" xsi:type="array">
+                    <item name="svg" xsi:type="number">1</item>
+                </item>
+                <item name="media_allowed" xsi:type="array">
+                    <item name="svg" xsi:type="number">1</item>
+                </item>
+            </argument>
+        </arguments>
+        <plugin name="m2c_svg_handler" type="MageSuite\Frontend\Plugin\WysiwygImagesStoragePlugin"/>
+    </type>
+
+    <virtualType name="Magento\Catalog\CategoryImageUpload" type="Magento\Catalog\Model\ImageUploader">
+        <arguments>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="svg" xsi:type="string">svg</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Swatches\Helper\Data">
+        <plugin name="missing_zero_swatch_value_plugin"
+                type="MageSuite\Frontend\Plugin\Swatches\MissingZeroValueSwatch"/>
+    </type>
+
+    <type name="\Magento\Cms\Controller\Adminhtml\Wysiwyg\Directive">
+        <plugin name="directivePlugin" type="\MageSuite\Frontend\Plugin\PreserveTransparencyOnModal" sortOrder="1" />
+    </type>
+
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="image_optimize" xsi:type="object">MageSuite\Frontend\Console\Command\OptimizeImage</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Catalog\Block\Product\View">
+        <plugin name="re_add_breadcrumbs_to_product_view" type="MageSuite\Frontend\Plugin\ReAddBreadcrumbsToProductView" />
+    </type>
+
+    <type name="MageSuite\Opengraph\Service\TagsCollector">
+        <arguments>
+            <argument name="dataProviders" xsi:type="array">
+                <item name="category" xsi:type="array">
+                    <item name="image_teaser" xsi:type="array">
+                        <item name="class" xsi:type="object">\MageSuite\Frontend\DataProviders\Opengraph\CategoryImageTeaser</item>
+                        <item name="sortOrder" xsi:type="number">25</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>

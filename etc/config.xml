@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <dev>
+            <js>
+                <minify_exclude>
+                    /tiny_mce/
+                </minify_exclude>
+            </js>
+            <css>
+                <minify_exclude>
+                    /bundle.css
+                    /tiny_mce/
+                </minify_exclude>
+            </css>
+        </dev>
+        <checkout>
+            <cart>
+                <show_minicart>true</show_minicart>
+            </cart>
+        </checkout>
+    </default>
+</config>

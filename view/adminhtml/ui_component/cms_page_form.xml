@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <fieldset name="content">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="additionalClasses" xsi:type="string">cs-csfeature__logo</item>
+            </item>
+        </argument>
+    </fieldset>
+    <fieldset name="search_engine_optimisation">
+        <field name="page_group_identifier">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Page Group ID</item>
+                    <item name="formElement" xsi:type="string">input</item>
+                    <item name="source" xsi:type="string">page</item>
+                    <item name="dataScope" xsi:type="string">page_group_identifier</item>
+                    <item name="sortOrder" xsi:type="number">5</item>
+                    <item name="notice" xsi:type="string" translate="true">
+                        Please enter an identifier of the multilingual pages that you want to group.
+                        This page will redirect to another page with the same identifier in case that you switch between languages in your storefront.
+                    </item>
+                    <item name="additionalClasses" xsi:type="string">cs-csfeature__logo</item>
+                </item>
+            </argument>
+        </field>
+    </fieldset>
+</form>

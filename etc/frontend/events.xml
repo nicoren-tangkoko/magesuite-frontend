@@ -1,0 +1,14 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="catalog_controller_product_init_after">
+        <observer instance="MageSuite\Frontend\Observer\Catalog\Product\FullPathBreadcrumbs" name="addProductFullPathBreadcrumbs"/>
+    </event>
+
+    <event name="layout_load_before">
+        <observer name="add_layout_handles" instance="MageSuite\Frontend\Observer\LayoutHandleUpdateSupport" />
+        <observer name="add_layout_update_for_simplified_bundle" instance="MageSuite\Frontend\Observer\AddLayoutUpdateForSimplifiedBundle" />
+    </event>
+
+    <event name="controller_front_send_response_before">
+        <observer name="add_filter_class_to_body" instance="MageSuite\Frontend\Observer\AddFilterClassToBody" shared="false" />
+    </event>
+</config>

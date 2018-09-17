@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <referenceBlock class="Magento\Catalog\Block\Product\ListProduct" name="category.products.list" as="product_list">
+                <action method="setDefaultDirection">
+                    <argument name="dir" xsi:type="helper" helper="MageSuite\Frontend\Helper\Category\View::getSortDirection"/>
+                </action>
+            </referenceBlock>
+        </referenceContainer>
+    </body>
+</page>

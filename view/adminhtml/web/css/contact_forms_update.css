@@ -1,0 +1,11 @@
+.pccf label[for=appendedtext],
+.pccf label[for=prependedtext],
+.pccf label[for=prependedcheckbox],
+.pccf label[for=appendedcheckbox],
+label[for="appendedtext"] + div.col-md-6,
+label[for="prependedtext"] + div.col-md-6,
+label[for="appendedcheckbox"] + div.col-md-6,
+label[for="prependedcheckbox"] + div.col-md-6,
+.pcform-section{
+    display: none;
+}

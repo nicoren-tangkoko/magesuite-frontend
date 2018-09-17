@@ -1,0 +1,28 @@
+.admin__field.cs-csfeature__logo > .admin__field-label > span:first-child {
+    position: relative;
+    padding-left: 35px;
+}
+
+.admin__collapsible-block-wrapper.cs-csfeature__logo .admin__collapsible-title > span:first-child {
+    position: relative;
+    padding-right: 40px;
+}
+
+.admin__field.cs-csfeature__logo > .admin__field-label > span:first-child:after,
+.admin__collapsible-block-wrapper.cs-csfeature__logo .admin__collapsible-title > span:first-child:after {
+    position: absolute;
+    top: 50%;
+    transform: translateY( -50% );
+    content: "";
+    width: 26px;
+    height: 20px;
+    background: url('../images/creativeshop-icon.svg') no-repeat 0 0;
+}
+
+.admin__field.cs-csfeature__logo > .admin__field-label > span:first-child:after {
+    left: 0;
+}
+
+.admin__collapsible-block-wrapper.cs-csfeature__logo .admin__collapsible-title > span:first-child:after {
+    right: 0;
+}
