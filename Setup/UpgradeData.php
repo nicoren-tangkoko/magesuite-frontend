@@ -51,22 +51,6 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
             $this->upgradeToVersion003();
         }
 
-        if (version_compare($context->getVersion(), '0.0.4', '<')) {
-            $this->upgradeToVersion004();
-        }
-
-        if (version_compare($context->getVersion(), '0.0.7', '<')) {
-            $this->upgradeToVersion007();
-        }
-
-        if (version_compare($context->getVersion(), '0.0.8', '<')) {
-            $this->upgradeToVersion008();
-        }
-
-        if (version_compare($context->getVersion(), '0.0.9', '<')) {
-            $this->upgradeToVersion009();
-        }
-
         if (version_compare($context->getVersion(), '0.0.10', '<')) {
             $this->upgradeToVersion010();
         }
@@ -122,24 +106,6 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
                 ]
             );
         }
-
-        if (!$this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'do_not_expand_flyout')) {
-            $this->eavSetup->addAttribute(
-                \Magento\Catalog\Model\Category::ENTITY,
-                'do_not_expand_flyout',
-                [
-                    'type' => 'int',
-                    'label' => 'Do not expand flyout',
-                    'input' => 'select',
-                    'source' => \Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
-                    'visible' => true,
-                    'required' => false,
-                    'sort_order' => 120,
-                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-                    'group' => 'Display Settings'
-                ]
-            );
-        }
     }
 
     protected function upgradeToVersion003()
@@ -151,7 +117,7 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
                 [
                     'type' => 'varchar',
                     'label' => 'Category Icon',
-                    'backend' => 'MageSuite\Frontend\Model\Category\Attribute\Backend\Icon',
+                    'backend' => \Magento\Catalog\Model\Category\Attribute\Backend\Image::class,
                     'input' => 'image',
                     'visible' => true,
                     'required' => false,
@@ -165,127 +131,19 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
 
     protected function upgradeToVersion004()
     {
-        if (!$this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'featured_products_header')) {
-            $this->eavSetup->addAttribute(
-                \Magento\Catalog\Model\Category::ENTITY,
-                'featured_products_header',
-                [
-                    'type' => 'varchar',
-                    'label' => 'Header',
-                    'input' => 'text',
-                    'visible' => true,
-                    'required' => false,
-                    'sort_order' => 10,
-                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-                    'group' => 'Featured Products'
-                ]
-            );
-        }
-
-        if (!$this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'featured_products')) {
-            $this->eavSetup->addAttribute(
-                \Magento\Catalog\Model\Category::ENTITY,
-                'featured_products',
-                [
-                    'type' => 'text',
-                    'label' => 'Category Featured Products',
-                    'input' => 'text',
-                    'visible' => true,
-                    'required' => false,
-                    'sort_order' => 20,
-                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-                    'group' => 'Featured Products'
-                ]
-            );
-        }
     }
 
     protected function upgradeToVersion007()
     {
-        if ($this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'image_teaser')) {
-            $this->eavSetup->removeAttribute(\Magento\Catalog\Model\Category::ENTITY, 'image_teaser');
-            $this->eavConfig->clear();
-        }
-
-        $this->eavSetup->addAttribute(
-            \Magento\Catalog\Model\Category::ENTITY,
-            'image_teaser',
-            [
-                'type' => 'varchar',
-                'label' => 'Image',
-                'backend' => 'MageSuite\Frontend\Model\Category\Attribute\Backend\ImageTeaser',
-                'input' => 'image',
-                'visible' => true,
-                'required' => false,
-                'sort_order' => 10,
-                'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-                'group' => 'Image Teaser'
-            ]
-        );
-
-        $attributes = [
-            'image_teaser_headline' => ['label' => 'Headline', 'type' => 'varchar', 'input' => 'text', 'sort_order' => 20],
-            'image_teaser_subheadline' => ['label' => 'Subheadline', 'type' => 'varchar', 'input' => 'text', 'sort_order' => 30],
-            'image_teaser_paragraph' => ['label' => 'Paragraph', 'type' => 'text', 'input' => 'textarea', 'sort_order' => 40],
-            'image_teaser_button_label' => ['label' => 'Button Label', 'type' => 'varchar', 'input' => 'text', 'sort_order' => 50],
-            'image_teaser_button_link' => ['label' => 'Button Link', 'type' => 'varchar', 'input' => 'text', 'sort_order' => 60]
-        ];
-
-        foreach($attributes AS $attributeCode => $attribute){
-            if (!$this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, $attributeCode)) {
-                $this->eavSetup->addAttribute(
-                    \Magento\Catalog\Model\Category::ENTITY,
-                    $attributeCode,
-                    [
-                        'type' => $attribute['type'],
-                        'label' => $attribute['label'],
-                        'input' => $attribute['input'],
-                        'visible' => true,
-                        'required' => false,
-                        'sort_order' => $attribute['sort_order'],
-                        'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-                        'group' => 'Image Teaser'
-                    ]
-                );
-            }
-        }
     }
 
     protected function upgradeToVersion008()
     {
-        $this->eavSetup->updateAttribute(
-            \Magento\Catalog\Model\Category::ENTITY,
-            'category_icon',
-            'backend_model',
-            'Magento\Catalog\Model\Category\Attribute\Backend\Image'
-        );
-
-        $this->eavSetup->updateAttribute(
-            \Magento\Catalog\Model\Category::ENTITY,
-            'image_teaser',
-            'backend_model',
-            'Magento\Catalog\Model\Category\Attribute\Backend\Image'
-        );
     }
 
     protected function upgradeToVersion009()
     {
-        if (!$this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'category_identifier')) {
-            $this->eavSetup->addAttribute(
-                \Magento\Catalog\Model\Category::ENTITY,
-                'category_identifier',
-                [
-                    'type' => 'varchar',
-                    'label' => 'Category Identifier',
-                    'input' => 'text',
-                    'visible' => true,
-                    'required' => false,
-                    'sort_order' => 31,
-                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
-                    'group' => 'General Information'
-                ]
-            );
-        }
+
     }
 
     protected function upgradeToVersion010()
