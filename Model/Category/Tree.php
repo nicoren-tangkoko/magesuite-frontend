@@ -31,7 +31,7 @@ class Tree
 
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollectionFactory,
-        \MageSuite\Frontend\Helper\Category $categoryHelper,
+        \MageSuite\ContentConstructorFrontend\Helper\Category $categoryHelper,
         \Magento\Framework\App\CacheInterface $cache,
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {
