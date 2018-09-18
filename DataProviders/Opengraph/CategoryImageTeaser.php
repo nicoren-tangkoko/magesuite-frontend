@@ -1,8 +1,8 @@
 <?php
 
-namespace MageSuite\Frontend\DataProviders\Opengraph;
+namespace Creativestyle\FrontendExtension\DataProviders\Opengraph;
 
-class CategoryImageTeaser extends \MageSuite\Opengraph\DataProviders\TagProvider implements \MageSuite\Opengraph\DataProviders\TagProviderInterface
+class CategoryImageTeaser extends \Creativestyle\Opengraph\DataProviders\TagProvider implements \Creativestyle\Opengraph\DataProviders\TagProviderInterface
 {
     /**
      * @var \Magento\Framework\Registry
@@ -10,7 +10,7 @@ class CategoryImageTeaser extends \MageSuite\Opengraph\DataProviders\TagProvider
     protected $registry;
 
     /**
-     * @var \MageSuite\Opengraph\Factory\TagFactoryInterface
+     * @var \Creativestyle\Opengraph\Factory\TagFactoryInterface
      */
     protected $tagFactory;
 
@@ -18,7 +18,7 @@ class CategoryImageTeaser extends \MageSuite\Opengraph\DataProviders\TagProvider
 
     public function __construct(
         \Magento\Framework\Registry $registry,
-        \MageSuite\Opengraph\Factory\TagFactoryInterface $tagFactory
+        \Creativestyle\Opengraph\Factory\TagFactoryInterface $tagFactory
     )
     {
         $this->registry = $registry;

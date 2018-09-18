@@ -1,6 +1,6 @@
 <?php
 
-namespace MageSuite\Frontend\Model\Category;
+namespace Creativestyle\FrontendExtension\Model\Category;
 
 class Tree
 {
@@ -15,7 +15,7 @@ class Tree
     protected $categoryCollectionFactory;
 
     /**
-     * @var \MageSuite\Frontend\Helper\Category
+     * @var \Creativestyle\ContentConstructorFrontendExtension\Helper\Category
      */
     protected $categoryHelper;
 
@@ -31,7 +31,7 @@ class Tree
 
     public function __construct(
         \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollectionFactory,
-        \MageSuite\ContentConstructorFrontend\Helper\Category $categoryHelper,
+        \Creativestyle\ContentConstructorFrontendExtension\Helper\Category $categoryHelper,
         \Magento\Framework\App\CacheInterface $cache,
         \Magento\Store\Model\StoreManagerInterface $storeManager
     ) {

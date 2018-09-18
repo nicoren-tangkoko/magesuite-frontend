@@ -1,6 +1,6 @@
 <?php
 
-namespace MageSuite\Frontend\Test\Unit\Block\Product\View;
+namespace Creativestyle\FrontendExtension\Test\Unit\Block\Product\View;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 
@@ -30,7 +30,7 @@ class TileTest extends \PHPUnit\Framework\TestCase
     {
         $block = $this->getTileBlock();
 
-        $this->assertEquals(['catalog_product_200'], $block->getIdentities());
+        $this->assertEquals(['cat_p_200'], $block->getIdentities());
     }
 
     public function testItReturnsCorrectTemplate()
@@ -46,7 +46,7 @@ class TileTest extends \PHPUnit\Framework\TestCase
     protected function getTileBlock()
     {
         $block = $this->objectManager->create(
-            \MageSuite\Frontend\Block\Product\View\Tile::class,
+            \Creativestyle\FrontendExtension\Block\Product\View\Tile::class,
             [
                 'data' => [
                     'product' => $this->getProductFixture()

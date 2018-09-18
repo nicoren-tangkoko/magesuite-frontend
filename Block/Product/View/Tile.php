@@ -1,6 +1,6 @@
 <?php
 
-namespace MageSuite\Frontend\Block\Product\View;
+namespace Creativestyle\FrontendExtension\Block\Product\View;
 
 class Tile extends \Magento\Framework\View\Element\Template implements \Magento\Framework\DataObject\IdentityInterface
 {
@@ -29,7 +29,7 @@ class Tile extends \Magento\Framework\View\Element\Template implements \Magento\
     }
 
     public function getIdentities() {
-        return ['catalog_product_'.$this->getData('product')->getId()];
+        return $this->getData('product')->getIdentities();
     }
 
     /**
