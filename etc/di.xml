@@ -159,7 +159,7 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="image_optimize" xsi:type="object">Creativestyle\FrontendExtension\Console\Command\OptimizeImage</item>
+                <item name="image_optimize" xsi:type="object">MageSuite\Frontend\Console\Command\OptimizeImage</item>
             </argument>
         </arguments>
     </type>
