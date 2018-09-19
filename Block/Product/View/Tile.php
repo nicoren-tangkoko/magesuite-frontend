@@ -1,6 +1,6 @@
 <?php
 
-namespace Creativestyle\FrontendExtension\Block\Product\View;
+namespace MageSuite\Frontend\Block\Product\View;
 
 class Tile extends \Magento\Framework\View\Element\Template implements \Magento\Framework\DataObject\IdentityInterface
 {

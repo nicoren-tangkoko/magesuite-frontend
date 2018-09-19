@@ -1,6 +1,6 @@
 <?php
 
-namespace Creativestyle\FrontendExtension\Test\Unit\Block\Product\View;
+namespace MageSuite\Frontend\Test\Unit\Block\Product\View;
 
 use Magento\Catalog\Api\Data\ProductInterface;
 
@@ -46,7 +46,7 @@ class TileTest extends \PHPUnit\Framework\TestCase
     protected function getTileBlock()
     {
         $block = $this->objectManager->create(
-            \Creativestyle\FrontendExtension\Block\Product\View\Tile::class,
+            \MageSuite\Frontend\Block\Product\View\Tile::class,
             [
                 'data' => [
                     'product' => $this->getProductFixture()
