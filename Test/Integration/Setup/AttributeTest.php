@@ -35,7 +35,6 @@ class AttributeTest extends \PHPUnit\Framework\TestCase
         $eavSetup = $this->eavSetupFactory->create(['setup' => $this->eavSetup]);
 
         $this->assertNotEmpty($eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'category_custom_url'));
-        $this->assertNotEmpty($eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'do_not_expand_flyout'));
         $this->assertNotEmpty($eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'category_icon'));
         $this->assertNotEmpty($eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'featured_products_header'));
         $this->assertNotEmpty($eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'featured_products'));
