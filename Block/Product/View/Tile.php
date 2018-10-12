@@ -15,9 +15,15 @@ class Tile extends \Magento\Framework\View\Element\Template implements \Magento\
      */
     protected $storeManager;
 
+    /**
+     * @var \Magento\Customer\Model\Session
+     */
+    protected $customerSession;
+
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Customer\Model\Session $customerSession,
         array $data = []
     )
     {
@@ -26,6 +32,7 @@ class Tile extends \Magento\Framework\View\Element\Template implements \Magento\
         $this->setTemplate('product/tile.phtml');
         $this->setData('cache_lifetime', 86400);
         $this->storeManager = $storeManager;
+        $this->customerSession = $customerSession;
     }
 
     public function getIdentities() {
@@ -89,6 +96,6 @@ class Tile extends \Magento\Framework\View\Element\Template implements \Magento\
 
         $cacheKey = array_merge($cacheKey, $this->cacheKeyElements);
 
-        return 'product_tile_' . $product->getId().'_'.md5(implode('|', $cacheKey));
+        return 'product_tile_' . $product->getId().'_'.$this->customerSession->getCustomerGroupId().'_'.md5(implode('|', $cacheKey));
     }
 }
