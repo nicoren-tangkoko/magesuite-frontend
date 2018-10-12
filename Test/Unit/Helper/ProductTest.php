@@ -134,26 +134,6 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expected, $this->productHelper->getSalePercentage($productStub, $customFinalPrice));
     }
 
-
-    protected function prepareProductStubCorrectPercentage($specialPrice, $specialPriceFrom, $specialPriceTo, $getPrice, $getFinalPrice)
-    {
-        /** @var \Magento\Catalog\Model\Product|\PHPUnit_Framework_MockObject_MockObject $productStub */
-        $productStub = $this->getMockBuilder(\Magento\Catalog\Model\Product::class)
-            ->disableOriginalConstructor()
-            ->setMethods(['getSpecialPrice', 'getSpecialFromDate', 'getSpecialToDate', 'getPrice', 'getFinalPrice', 'getTypeId'])
-            ->getMock();
-
-        $productStub->method('getSpecialPrice')->willReturn($specialPrice);
-        $productStub->method('getSpecialFromDate')->willReturn($specialPriceFrom);
-        $productStub->method('getSpecialToDate')->willReturn($specialPriceTo);
-        $productStub->method('getPrice')->willReturn($getPrice);
-        $productStub->method('getFinalPrice')->willReturn($getFinalPrice);
-        $productStub->method('getTypeId')->willReturn('simple');
-
-        return $productStub;
-    }
-
-
     public static function getPercentage()
     {
         return [
