@@ -100,19 +100,19 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $toTimestamp = strtotime($newsToDate);
         $dateTimestamp = strtotime($date);
 
-        if (!$fromTimestamp && !$toTimestamp) {
+        if(!$fromTimestamp && !$toTimestamp){
             return false;
         }
 
-        if (!$fromTimestamp && $dateTimestamp <= $toTimestamp) {
+        if(!$fromTimestamp && $dateTimestamp <= $toTimestamp){
             return true;
         }
 
-        if (!$toTimestamp && $dateTimestamp >= $fromTimestamp) {
+        if(!$toTimestamp && $dateTimestamp >= $fromTimestamp){
             return true;
         }
 
-        if ($dateTimestamp >= $fromTimestamp && $dateTimestamp <= $toTimestamp) {
+        if($dateTimestamp >= $fromTimestamp && $dateTimestamp <= $toTimestamp){
             return true;
         }
 
@@ -121,16 +121,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function isOnSale($product, $finalPrice = null)
     {
-        if (in_array($product->getTypeId(), ['simple', 'bundle'])) {
+        if($product->getTypeId() == 'simple'){
             return $this->checkIsProductOnSale($product, $finalPrice);
         }
 
-        if ($product->getTypeId() == 'configurable') {
-            $simpleProducts = $product->getTypeInstance()->getUsedProducts($product);
+        if($product->getTypeId() == 'configurable'){
+            $simpleProducts = $product->getTypeInstance()->getUsedProducts($product, $finalPrice);
             foreach ($simpleProducts as $simpleProduct) {
-                $result = $this->checkIsProductOnSale($simpleProduct, $finalPrice);
+                $result = $this->checkIsProductOnSale($simpleProduct);
 
-                if ($result) {
+                if($result){
                     return true;
                 }
             }
@@ -154,7 +154,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         $salePrice = $finalPrice ? $finalPrice : $product->getFinalPrice();
-        if ($product->getPrice() <= $salePrice and $product->getTypeId() !== 'bundle') {
+        if ($product->getPrice() <= $salePrice) {
             return false;
         }
 
@@ -175,14 +175,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getSalePercentage($product, $finalPrice = null)
     {
-        if (!$this->isOnSale($product, $finalPrice)) {
+        if(!$this->isOnSale($product, $finalPrice)){
             return false;
         }
 
         $regularPrice = $product->getPrice();
         $salePrice = $finalPrice ? $finalPrice : $product->getFinalPrice();
 
-        if (!$regularPrice && !in_array($product->getTypeId(), ['configurable', 'bundle'])) {
+        if(!$regularPrice && $product->getTypeId() != 'configurable'){
             return false;
         }
 
@@ -190,14 +190,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             list($regularPrice, $salePrice) = $this->getConfigurablePrices($product);
         }
 
-        if ($product->getTypeId() == 'bundle') {
-            $roundDiscount = round(100 - $product->getSpecialPrice());
-        } else {
-            $discountPercentage = (($regularPrice - $salePrice) / $regularPrice) * 100;
-            $roundDiscount = round($discountPercentage, 0);
-        }
+        $discountPercentage = (($regularPrice - $salePrice)/$regularPrice) * 100;
 
-        if ((int)$roundDiscount >= 5) {
+        $roundDiscount = round($discountPercentage, 0);
+
+        if((int) $roundDiscount >= 5){
             return $roundDiscount;
         }
 
@@ -209,11 +206,11 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $simpleProducts = $product->getTypeInstance()->getUsedProducts($product);
 
         $regularPrice = 0;
-        $salePrice = $product->getFinalPrice();
+        $salePrice = 0;
 
         foreach ($simpleProducts as $simpleProduct) {
             $regularPrice = $regularPrice ? max($simpleProduct->getPrice(), $regularPrice) : $simpleProduct->getPrice();
-            $salePrice = $salePrice ? min($simpleProduct->getFinalPrice(), $salePrice) : $simpleProduct->getFinalPrice();
+            $salePrice = $salePrice ? min($simpleProduct->getFinalPrice(), $salePrice): $simpleProduct->getFinalPrice();
         }
 
         return [$regularPrice, $salePrice];

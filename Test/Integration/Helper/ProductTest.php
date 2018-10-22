@@ -33,12 +33,12 @@ class ProductTest extends \PHPUnit\Framework\TestCase
 
     public static function loadProductWithReviewsFixture()
     {
-        require __DIR__ . '/../_files/product_with_reviews.php';
+        require __DIR__.'/../_files/product_with_reviews.php';
     }
 
     public static function loadProductWithReviewsFixtureRollback()
     {
-        require __DIR__ . '/../_files/product_with_reviews_rollback.php';
+        require __DIR__.'/../_files/product_with_reviews_rollback.php';
     }
 
     /**
@@ -119,26 +119,6 @@ class ProductTest extends \PHPUnit\Framework\TestCase
 
     public static function loadConfigurableProduct()
     {
-        require __DIR__ . '/../_files/configurable_product.php';
-    }
-
-    /**
-     * @magentoDbIsolation enabled
-     * @magentoAppIsolation enabled
-     * @magentoDataFixture Magento/Bundle/_files/product.php
-     * @magentoDataFixture loadBundleProduct
-     */
-    public function testItReturnsCorrectSalePercentageForBundleProduct()
-    {
-        $product = $this->productRepository->get('bundle-product');
-
-        $salePercentage = $this->productHelper->getSalePercentage($product);
-
-        $this->assertEquals(35, $salePercentage);
-    }
-
-    public static function loadBundleProduct()
-    {
-        require __DIR__ . '/../_files/bundle_product.php';
+        require __DIR__.'/../_files/configurable_products.php';
     }
 }
