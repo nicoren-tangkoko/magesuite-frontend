@@ -14,15 +14,22 @@ class CategoryImageTeaser extends \MageSuite\Opengraph\DataProviders\TagProvider
      */
     protected $tagFactory;
 
+    /**
+     * @var \MageSuite\Opengraph\Helper\Mime
+     */
+    protected $mimeHelper;
+
     protected $tags = [];
 
     public function __construct(
         \Magento\Framework\Registry $registry,
-        \MageSuite\Opengraph\Factory\TagFactoryInterface $tagFactory
+        \MageSuite\Opengraph\Factory\TagFactoryInterface $tagFactory,
+        \MageSuite\Opengraph\Helper\Mime $mimeHelper
     )
     {
         $this->registry = $registry;
         $this->tagFactory = $tagFactory;
+        $this->mimeHelper = $mimeHelper;
     }
 
     public function getTags()
@@ -56,14 +63,21 @@ class CategoryImageTeaser extends \MageSuite\Opengraph\DataProviders\TagProvider
         $tag = $this->tagFactory->getTag('image', $imageUrl);
         $this->addTag($tag);
 
+        $mimeType = $this->mimeHelper->getMimeType($imageUrl);
+
+        if($mimeType){
+            $tag = $this->tagFactory->getTag('image:type', $mimeType);
+            $this->addTag($tag);
+        }
+
         $categoryData = array_filter($category->getData());
         $title = $categoryData['og_title'] ?? $categoryData['meta_title'] ?? $categoryData['name'] ?? null;
 
-        if(!$title){
-            return;
+        if ($title) {
+            $tag = $this->tagFactory->getTag('image:alt', $title);
+            $this->addTag($tag);
         }
 
-        $tag = $this->tagFactory->getTag('image:alt', $title);
-        $this->addTag($tag);
+        return;
     }
 }
