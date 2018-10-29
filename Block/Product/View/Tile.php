@@ -88,14 +88,17 @@ class Tile extends \Magento\Framework\View\Element\Template implements \Magento\
     {
         $data = $this->getData();
         $product = $data['product'];
+        $store = $this->storeManager->getStore();
 
-        $cacheKey = [];
+        $cacheKeyDefaultElements = [
+            $product->getFinalPrice(),
+            $store->getId(),
+            $store->getCurrentCurrencyCode(),
+            $this->customerSession->getCustomerGroupId()
+        ];
 
-        $cacheKey[] = $product->getSpecialPrice();
-        $cacheKey[] = $this->storeManager->getStore()->getId();
+        $cacheKey = array_merge($cacheKeyDefaultElements, $this->cacheKeyElements);
 
-        $cacheKey = array_merge($cacheKey, $this->cacheKeyElements);
-
-        return 'product_tile_' . $product->getId().'_'.$this->customerSession->getCustomerGroupId().'_'.md5(implode('|', $cacheKey));
+        return 'product_tile_' . $product->getId().'_'.md5(implode('|', $cacheKey));
     }
 }
