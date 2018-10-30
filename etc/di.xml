@@ -68,10 +68,6 @@
                 sortOrder="1"/>
     </type>
 
-    <type name="Magento\Framework\App\FrontControllerInterface">
-        <plugin name="refresh_messages" type="\MageSuite\Frontend\Plugin\RefreshMessages"/>
-    </type>
-
     <type name="Magento\ConfigurableProduct\Model\ResourceModel\Product\Type\Configurable">
         <plugin name="sort_attribute_options" type="\MageSuite\Frontend\Plugin\SortAttributeOptions"/>
     </type>
