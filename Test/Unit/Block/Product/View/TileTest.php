@@ -23,14 +23,14 @@ class TileTest extends \PHPUnit\Framework\TestCase
 
         $block->setCacheKeyElements('first_additional_cache_value', 'second_additional_cache_value');
 
-        $this->assertEquals('product_tile_200_0_dea5988345a40fb3a29078c7d583b5e2', $block->getCacheKey());
+        $this->assertEquals('product_tile_222_37acc2461dc7d4bc577e234957cf0845', $block->getCacheKey());
     }
 
     public function testItReturnsCorrectIdentities()
     {
         $block = $this->getTileBlock();
 
-        $this->assertEquals(['cat_p_200'], $block->getIdentities());
+        $this->assertEquals(['cat_p_222'], $block->getIdentities());
     }
 
     public function testItReturnsCorrectTemplate()
@@ -61,7 +61,7 @@ class TileTest extends \PHPUnit\Framework\TestCase
     {
         $product = $this->objectManager->create(ProductInterface::class);
 
-        $product->setId(200);
+        $product->setId(222);
         $product->setSpecialPrice(19);
 
         return $product;

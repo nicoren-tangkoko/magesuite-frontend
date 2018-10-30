@@ -102,6 +102,12 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals('http://localhost/index.php/checkout/cart/add/product/555/', $url);
     }
 
+
+    public static function loadConfigurableProduct()
+    {
+        require __DIR__ . '/../_files/configurable_product.php';
+    }
+
     /**
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
@@ -117,9 +123,10 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(68, $salePercentage);
     }
 
-    public static function loadConfigurableProduct()
+
+    public static function loadBundleProduct()
     {
-        require __DIR__ . '/../_files/configurable_product.php';
+        require __DIR__ . '/../_files/bundle_product.php';
     }
 
     /**
@@ -137,8 +144,4 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(35, $salePercentage);
     }
 
-    public static function loadBundleProduct()
-    {
-        require __DIR__ . '/../_files/bundle_product.php';
-    }
 }

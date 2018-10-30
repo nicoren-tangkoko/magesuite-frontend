@@ -4,7 +4,6 @@ namespace MageSuite\Frontend\Service\Breadcrumb;
 
 class FirstCategoryFinder implements BreadcrumbCategoryFinderInterface
 {
-
     /**
      * @var \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory
      */

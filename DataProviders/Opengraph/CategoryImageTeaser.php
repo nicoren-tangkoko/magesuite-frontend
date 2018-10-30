@@ -73,9 +73,9 @@ class CategoryImageTeaser extends \MageSuite\Opengraph\DataProviders\TagProvider
         $categoryData = array_filter($category->getData());
         $title = $categoryData['og_title'] ?? $categoryData['meta_title'] ?? $categoryData['name'] ?? null;
 
-        if($title){
+        if ($title) {
             $tag = $this->tagFactory->getTag('image:alt', $title);
-            $this->addTag($tag);;
+            $this->addTag($tag);
         }
 
         return;

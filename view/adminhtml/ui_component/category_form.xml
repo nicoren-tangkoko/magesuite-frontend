@@ -2,38 +2,6 @@
 
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
-    <fieldset name="general">
-        <field name="category_identifier">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">31</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Category Identifier</item>
-                    <item name="notice" xsi:type="string" translate="true">
-                        The additional category identifier to be used by developers.
-                    </item>
-                    <item name="additionalClasses" xsi:type="string">cs-csfeature__logo</item>
-                </item>
-            </argument>
-        </field>
-        <field name="category_custom_url">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">35</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Custom target URL</item>
-                    <item name="notice" xsi:type="string" translate="true">
-                        The category will be redirected to this URL. If you do not want to redirect this page, leave this field blank.
-                        Use absolute URL (starts with http://) to redirect outside shop domain.
-                        Use relative URL i.e. customer/account/login/ to redirect inside shop domain.
-                    </item>
-                    <item name="additionalClasses" xsi:type="string">cs-csfeature__logo</item>
-                </item>
-            </argument>
-        </field>
-    </fieldset>
     <fieldset name="content">
         <field name="category_icon" sortOrder="40" formElement="fileUploader">
             <argument name="data" xsi:type="array">
@@ -62,23 +30,6 @@
         </field>
     </fieldset>
     <fieldset name="display_settings">
-        <field name="do_not_expand_flyout">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">120</item>
-                    <item name="dataType" xsi:type="string">boolean</item>
-                    <item name="formElement" xsi:type="string">checkbox</item>
-                    <item name="label" xsi:type="string" translate="true">Do not expand flyout</item>
-                    <item name="prefer" xsi:type="string">toggle</item>
-                    <item name="valueMap" xsi:type="array">
-                        <item name="true" xsi:type="string">1</item>
-                        <item name="false" xsi:type="string">0</item>
-                    </item>
-                    <item name="default" xsi:type="number">0</item>
-                    <item name="additionalClasses" xsi:type="string">cs-csfeature__logo</item>
-                </item>
-            </argument>
-        </field>
         <container name="category_view_group">
             <argument name="data" xsi:type="array">
                 <item name="type" xsi:type="string">group</item>
@@ -124,121 +75,6 @@
                     </item>
                 </argument>
             </field>
-        </container>
-    </fieldset>
-    <fieldset name="image_teaser">
-        <argument name="data" xsi:type="array">
-            <item name="config" xsi:type="array">
-                <item name="label" xsi:type="string" translate="true">Image Teaser</item>
-                <item name="collapsible" xsi:type="boolean">true</item>
-                <item name="sortOrder" xsi:type="number">30</item>
-                <item name="additionalClasses" xsi:type="string">cs-csfeature__logo</item>
-            </item>
-        </argument>
-        <field name="image_teaser" sortOrder="40" formElement="fileUploader">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="source" xsi:type="string">category</item>
-                </item>
-            </argument>
-            <settings>
-                <elementTmpl>ui/form/element/uploader/uploader</elementTmpl>
-                <dataType>string</dataType>
-                <label translate="true">Image</label>
-                <visible>true</visible>
-                <required>false</required>
-            </settings>
-            <formElements>
-                <fileUploader>
-                    <settings>
-                        <required>false</required>
-                        <uploaderConfig>
-                            <param xsi:type="url" name="url" path="catalog/category_image/upload"/>
-                        </uploaderConfig>
-                        <previewTmpl>Magento_Catalog/image-preview</previewTmpl>
-                    </settings>
-                </fileUploader>
-            </formElements>
-        </field>
-        <field name="image_teaser_headline">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">20</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Headline</item>
-                </item>
-            </argument>
-        </field>
-        <field name="image_teaser_subheadline">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">30</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Subheadline</item>
-                </item>
-            </argument>
-        </field>
-        <field name="image_teaser_paragraph">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">40</item>
-                    <item name="dataType" xsi:type="string">text</item>
-                    <item name="formElement" xsi:type="string">textarea</item>
-                    <item name="label" xsi:type="string" translate="true">Paragraph</item>
-                </item>
-            </argument>
-        </field>
-        <field name="image_teaser_button_label">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">50</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Button Label</item>
-                </item>
-            </argument>
-        </field>
-        <field name="image_teaser_button_link">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">60</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Button Link</item>
-                </item>
-            </argument>
-        </field>
-    </fieldset>
-    <fieldset name="assign_featured_products">
-        <argument name="data" xsi:type="array">
-            <item name="config" xsi:type="array">
-                <item name="label" xsi:type="string" translate="true">Featured Products</item>
-                <item name="collapsible" xsi:type="boolean">true</item>
-                <item name="sortOrder" xsi:type="number">40</item>
-                <item name="additionalClasses" xsi:type="string">cs-csfeature__logo</item>
-            </item>
-        </argument>
-        <field name="featured_products_header">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">10</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Header</item>
-                </item>
-            </argument>
-        </field>
-        <container name="assign_featured_products_container" >
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">20</item>
-                </item>
-            </argument>
-            <htmlContent name="html_content">
-                <argument name="block" xsi:type="object">MageSuite\Frontend\Block\Adminhtml\Category\AssignFeaturedProducts</argument>
-            </htmlContent>
         </container>
     </fieldset>
 </form>
