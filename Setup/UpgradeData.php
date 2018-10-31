@@ -129,23 +129,6 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
         }
     }
 
-    protected function upgradeToVersion004()
-    {
-    }
-
-    protected function upgradeToVersion007()
-    {
-    }
-
-    protected function upgradeToVersion008()
-    {
-    }
-
-    protected function upgradeToVersion009()
-    {
-
-    }
-
     protected function upgradeToVersion010()
     {
         if (!$this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'category_view')) {
@@ -165,16 +148,6 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
                 ]
             );
         }
-    }
-
-    /**
-     * This is a fix for missing 0.0.8 and 0.0.9 migrations in 2.1 branch.
-     * Because on 2.1 we bumped version up to 0.0.10, there's need to re-run both missing migrations.
-     */
-    protected function upgradeToVersion011()
-    {
-        $this->upgradeToVersion008();
-        $this->upgradeToVersion009();
     }
 
     protected function upgradeToVersion012()

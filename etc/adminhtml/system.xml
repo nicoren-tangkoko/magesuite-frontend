@@ -17,13 +17,5 @@
                 </field>
             </group>
         </section>
-        <section id="checkout" translate="label">
-            <group id="cart">
-                <field id="show_minicart" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>After Adding a Product Show Mini Cart</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                </field>
-            </group>
-        </section>
     </system>
 </config>
