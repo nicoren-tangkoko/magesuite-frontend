@@ -15,10 +15,5 @@
                 </minify_exclude>
             </css>
         </dev>
-        <checkout>
-            <cart>
-                <show_minicart>true</show_minicart>
-            </cart>
-        </checkout>
     </default>
 </config>
