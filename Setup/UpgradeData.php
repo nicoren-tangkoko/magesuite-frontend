@@ -54,10 +54,6 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
         if (version_compare($context->getVersion(), '0.0.10', '<')) {
             $this->upgradeToVersion010();
         }
-        
-        if (version_compare($context->getVersion(), '0.0.11', '<')) {
-            $this->upgradeToVersion011();
-        }
 
         if (version_compare($context->getVersion(), '0.0.12', '<')) {
             $this->upgradeToVersion012();
