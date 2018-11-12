@@ -63,6 +63,10 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
             $this->upgradeToVersion013();
         }
 
+        if (version_compare($context->getVersion(), '1.0.1', '<')) {
+            $this->upgradeToVersion101();
+        }
+
         $setup->endSetup();
     }
 
@@ -178,6 +182,13 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
                     'apply_to' => \Magento\Catalog\Model\Product\Type::TYPE_BUNDLE
                 ]
             );
+        }
+    }
+
+    protected function upgradeToVersion101()
+    {
+        if ($this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'category_view')) {
+            $this->eavSetup->updateAttribute(\Magento\Catalog\Model\Category::ENTITY, 'category_view', 'source_model', 'MageSuite\Frontend\Model\Category\Attribute\Source\CategoryDisplay');
         }
     }
 }
