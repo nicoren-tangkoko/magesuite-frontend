@@ -109,7 +109,7 @@ class SwitchStoreViewReplaceUrlTest extends \PHPUnit\Framework\TestCase
             ->with('m2c.dev/site1-second')
             ->willReturn('J20yYy5kZXYvc2l0ZTEtc2Vjb25kJw==');
 
-        $result = $this->plugin->aroundGetTargetStorePostData($this->switcherDummy, '', $this->storeDouble, []);
+        $result = $this->plugin->afterGetTargetStorePostData($this->switcherDummy, '', $this->storeDouble, []);
 
         $this->assertEquals(
             '{"action":"m2c.dev\/site1-second","data":{"uenc":"J20yYy5kZXYvc2l0ZTEtc2Vjb25kJw==","___store":null}}',
