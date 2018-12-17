@@ -37,7 +37,7 @@ class SwitchStoreViewReplaceUrl
         $this->postDataHelper = $postDataHelper;
     }
 
-    public function aroundGetTargetStorePostData(
+    public function afterGetTargetStorePostData(
         \Magento\Store\Block\Switcher $subject,
         $proceed,
         \Magento\Store\Model\Store $store,
@@ -45,13 +45,13 @@ class SwitchStoreViewReplaceUrl
     )
     {
         if($this->request->getFullActionName() != 'cms_page_view'){
-            return $proceed($store, $data);
+             return $result;
         }
 
         $newUrl = $this->urlGenerator->replaceCmsPageUrl($this->request->getParam('page_id'), $store->getId(), $this->request->getUriString());
 
         if(empty($newUrl)){
-            return $proceed($store, $data);
+            return $result;
         }
 
         $data[\Magento\Framework\App\ActionInterface::PARAM_NAME_URL_ENCODED] = $this->urlHelper->getEncodedUrl($newUrl);
