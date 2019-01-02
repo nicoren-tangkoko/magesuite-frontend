@@ -39,7 +39,7 @@ class SwitchStoreViewReplaceUrl
 
     public function afterGetTargetStorePostData(
         \Magento\Store\Block\Switcher $subject,
-        $proceed,
+        $result,
         \Magento\Store\Model\Store $store,
         $data = []
     )
