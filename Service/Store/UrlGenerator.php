@@ -70,7 +70,7 @@ class UrlGenerator
         return $newUrl;
     }
 
-    private function getCmsPage($storeId, $pageGroupIdentifier)
+    public function getCmsPage($storeId, $pageGroupIdentifier)
     {
         $collection = $this->pageCollectionFactory->create();
         $collection->addFieldToFilter('page_group_identifier', $pageGroupIdentifier);
