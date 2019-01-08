@@ -164,6 +164,10 @@
         <plugin name="re_add_breadcrumbs_to_product_view" type="MageSuite\Frontend\Plugin\ReAddBreadcrumbsToProductView" />
     </type>
 
+    <type name="Magento\Cms\Block\Widget\Page\Link">
+        <plugin name="get_page_url_by_group_identifier" type="MageSuite\Frontend\Plugin\Cms\Block\Widget\Page\Link\GetPageUrlByGroupIdentifier" />
+    </type>
+
     <type name="MageSuite\Opengraph\Service\TagsCollector">
         <arguments>
             <argument name="dataProviders" xsi:type="array">
