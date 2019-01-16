@@ -55,6 +55,9 @@
                         <item name="validation" xsi:type="array">
                             <item name="required-entry" xsi:type="boolean">false</item>
                         </item>
+                        <item name="notice" xsi:type="string" translate="true">
+                            Sets a list or a grid as the default view of products for the category.
+                        </item>
                     </item>
                 </argument>
             </field>
