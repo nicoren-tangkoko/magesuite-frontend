@@ -8,9 +8,10 @@
         <?php if ($this->helper('Magento\Sales\Helper\Reorder')->canReorder($order->getEntityId())) : ?>
             <a
                 class="cs-info-block__button | cs-button cs-button--size_300 cs-button--look_default"
-                href="<?php /* @escapeNotVerified */ echo $block->getReorderUrl($order) ?>"
+                href="#"
+                data-post='<?php /* @escapeNotVerified */ echo $this->helper(\Magento\Framework\Data\Helper\PostHelper::class)->getPostData($block->getReorderUrl($order)) ?>'
             >
-                 <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Reorder') ?></span>
+                <span class="cs-button__span"><?php /* @escapeNotVerified */ echo __('Reorder') ?></span>
                 <svg class="cs-button__icon">
                     <use xlink:href="#arrow_next"></use>
                 </svg>
