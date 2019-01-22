@@ -17,8 +17,8 @@
         </dev>
         <sales>
             <general>
-                <show_print_button>1</enable>
-            </order_print>
-        </order>
+                <show_print_button>1</show_print_button>
+            </general>
+        </sales>
     </default>
 </config>
