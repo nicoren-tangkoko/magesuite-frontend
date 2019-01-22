@@ -35,7 +35,7 @@ class OrderPrintTest extends \Magento\TestFramework\TestCase\AbstractController
     }
 
     /**
-     * @magentoConfigFixture current_store order/order_print/enable 0
+     * @magentoConfigFixture current_store sales/general/show_print_button 0
      * @magentoDataFixture Magento/Sales/_files/order_with_customer.php
      */
     public function testHiddingOrderPrintButton()
@@ -51,7 +51,7 @@ class OrderPrintTest extends \Magento\TestFramework\TestCase\AbstractController
     }
 
     /**
-     * @magentoConfigFixture current_store order/order_print/enable 1
+     * @magentoConfigFixture current_store sales/general/show_print_button 1
      * @magentoDataFixture Magento/Sales/_files/order_with_customer.php
      */
     public function testShowingOrderPrintButton()

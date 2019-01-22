@@ -17,14 +17,10 @@
                 </field>
             </group>
         </section>
-        <section id="order" translate="label" sortOrder="501" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Order</label>
-            <tab>sales</tab>
-            <resource>MageSuite_Frontend::config_order</resource>
-            <group id="order_print" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                <label>Order print</label>
-                <field id="enable" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Show order print button</label>
+        <section id="sales">
+            <group id="general">
+                <field id="show_print_button" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
+                    <label>Show order print button in customer area</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
             </group>

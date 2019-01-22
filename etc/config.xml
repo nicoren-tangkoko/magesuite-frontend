@@ -15,9 +15,9 @@
                 </minify_exclude>
             </css>
         </dev>
-        <order>
-            <order_print>
-                <enable>1</enable>
+        <sales>
+            <general>
+                <show_print_button>1</enable>
             </order_print>
         </order>
     </default>
