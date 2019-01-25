@@ -180,4 +180,12 @@
             </argument>
         </arguments>
     </type>
+
+    <type name="Magento\Catalog\Model\Product\Type\AbstractType">
+        <plugin name="allow_buying_simplified_bundle_from_list" type="MageSuite\Frontend\Plugin\Catalog\Model\Product\Type\AbstractType\AllowBuyingSimplifiedBundleFromList" />
+    </type>
+
+    <type name="Magento\Catalog\Block\Product\ListProduct">
+        <plugin name="add_bundle_selections_to_simplified_bundle" type="MageSuite\Frontend\Plugin\Catalog\Block\Product\ListProduct\AddBundleSelectionsToSimplifiedBundle" />
+    </type>
 </config>
