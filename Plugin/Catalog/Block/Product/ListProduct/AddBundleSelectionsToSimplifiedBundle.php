@@ -6,7 +6,7 @@ class AddBundleSelectionsToSimplifiedBundle
 {
     public function afterGetAddToCartPostParams($subject, $result, $product)
     {
-        if ($product->getTypeId() == 'bundle' and $product->getIsSimplifiedBundle()) {
+        if ($product->getTypeId() == \Magento\Bundle\Model\Product\Type::TYPE_CODE and $product->getIsSimplifiedBundle()) {
             $selectionCollection = $product->getTypeInstance()->getSelectionsCollection(
                 $product->getTypeInstance()->getOptionsIds($product),
                 $product

@@ -9,7 +9,7 @@ class AllowBuyingSimplifiedBundleFromList
             return $result;
         }
 
-        if($product->getTypeId() == 'bundle' and $product->getIsSimplifiedBundle()) {
+        if($product->getTypeId() ==  \Magento\Bundle\Model\Product\Type::TYPE_CODE and $product->getIsSimplifiedBundle()) {
             return true;
         }
 
