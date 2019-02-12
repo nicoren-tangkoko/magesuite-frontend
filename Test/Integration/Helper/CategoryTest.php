@@ -81,25 +81,6 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
      * @magentoAppIsolation enabled
      * @magentoDataFixture loadCategoriesFixture
      */
-    public function testItReturnsCategoryIcon()
-    {
-        $categoryId = 335;
-
-        $category = $this->categoryRepository->get($categoryId);
-
-        $this->assertEquals('icon.png', $category->getCategoryIcon());
-        $this->assertEquals(
-            'http://localhost/pub/media/catalog/category/icon.png',
-            $this->categoryHelper->getCategoryIcon($category)
-        );
-    }
-
-    /**
-     * @magentoAppArea frontend
-     * @magentoDbIsolation enabled
-     * @magentoAppIsolation enabled
-     * @magentoDataFixture loadCategoriesFixture
-     */
     public function testItReturnsCurrentCategory()
     {
         $categoryId = 335;
