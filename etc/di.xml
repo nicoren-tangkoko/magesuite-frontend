@@ -98,6 +98,10 @@
         <plugin name="add_information_message_before_login" type="MageSuite\Frontend\Plugin\ProductAlert\AddInformationMessageBeforeLogin" sortOrder="5"/>
     </type>
 
+    <type name="MageSuite\ProductTile\Helper\AddToCart">
+        <plugin name="mark_simplified_bundle_as_not_configurable" type="\MageSuite\Frontend\Plugin\ProductTile\Helper\AddToCart\MarkSimplifiedBundleAsNotConfigurable"/>
+    </type>
+
     <type name="Magento\Framework\HTTP\PhpEnvironment\RemoteAddress">
         <arguments>
             <argument name="alternativeHeaders" xsi:type="array">
@@ -179,5 +183,13 @@
                 </item>
             </argument>
         </arguments>
+    </type>
+
+    <type name="Magento\Catalog\Model\Product\Type\AbstractType">
+        <plugin name="allow_buying_simplified_bundle_from_list" type="MageSuite\Frontend\Plugin\Catalog\Model\Product\Type\AbstractType\AllowBuyingSimplifiedBundleFromList" />
+    </type>
+
+    <type name="Magento\Catalog\Block\Product\ListProduct">
+        <plugin name="add_bundle_selections_to_simplified_bundle" type="MageSuite\Frontend\Plugin\Catalog\Block\Product\ListProduct\AddBundleSelectionsToSimplifiedBundle" />
     </type>
 </config>
