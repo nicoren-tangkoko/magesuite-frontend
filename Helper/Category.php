@@ -110,30 +110,6 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         return $categoryNode;
     }
 
-    public function getCategoryIcon($category)
-    {
-        $url = false;
-        $image = $category->getCategoryIcon();
-
-        if ($image) {
-            if (is_string($image)) {
-                $url = $this->storeManager->getStore()->getBaseUrl(
-                        \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
-                    ) . 'catalog/category/' . $image;
-            } elseif (is_array($image) && isset($image[0]) && isset($image[0]['name'])) {
-                $url = $this->storeManager->getStore()->getBaseUrl(
-                        \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
-                    ) . 'catalog/category/' . $image[0]['name'];
-            } else {
-
-                throw new \Magento\Framework\Exception\LocalizedException(
-                    __('Something went wrong while getting the image url.')
-                );
-            }
-        }
-
-        return $url;
-    }
 
     protected function getFeaturedProductsIds($category)
     {

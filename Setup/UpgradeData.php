@@ -47,10 +47,6 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
             $this->upgradeToVersion002();
         }
 
-        if (version_compare($context->getVersion(), '0.0.3', '<')) {
-            $this->upgradeToVersion003();
-        }
-
         if (version_compare($context->getVersion(), '0.0.10', '<')) {
             $this->upgradeToVersion010();
         }
@@ -103,27 +99,6 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
                     'sort_order' => 110,
                     'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
                     'group' => 'Display Settings'
-                ]
-            );
-        }
-    }
-
-    protected function upgradeToVersion003()
-    {
-        if (!$this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'category_icon')) {
-            $this->eavSetup->addAttribute(
-                \Magento\Catalog\Model\Category::ENTITY,
-                'category_icon',
-                [
-                    'type' => 'varchar',
-                    'label' => 'Category Icon',
-                    'backend' => \Magento\Catalog\Model\Category\Attribute\Backend\Image::class,
-                    'input' => 'image',
-                    'visible' => true,
-                    'required' => false,
-                    'sort_order' => 35,
-                    'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_STORE,
-                    'group' => 'Content'
                 ]
             );
         }
