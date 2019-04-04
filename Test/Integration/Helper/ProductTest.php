@@ -55,13 +55,18 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $reviewSummary = $this->productHelper->getReviewSummary($product, true);
 
         $this->assertArrayHasKey('data', $reviewSummary);
-        $this->assertCount(4, $reviewSummary['data']);
+        $this->assertCount(5, $reviewSummary['data']);
         $this->assertEquals(5, $reviewSummary['data']['maxStars']);
         $this->assertEquals(1, $reviewSummary['data']['count']);
 
         $this->assertArrayHasKey('votes', $reviewSummary['data']);
         $this->assertCount(5, $reviewSummary['data']['votes']);
-        $this->assertEquals(2, $reviewSummary['data']['votes'][2]);
+        $this->assertEquals(1, $reviewSummary['data']['votes'][2]);
+
+        $this->assertArrayHasKey('ratings', $reviewSummary['data']);
+        $this->assertEquals(2, $reviewSummary['data']['ratings'][2]);
+        $this->assertEquals(3, $reviewSummary['data']['ratings'][4]);
+
     }
 
     /**
@@ -78,7 +83,7 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $reviewSummary = $this->productHelper->getReviewSummary($product);
 
         $this->assertArrayHasKey('data', $reviewSummary);
-        $this->assertCount(4, $reviewSummary['data']);
+        $this->assertCount(5, $reviewSummary['data']);
 
         $this->assertEquals(0, $reviewSummary['data']['count']);
 

@@ -5,8 +5,8 @@ namespace MageSuite\Frontend\Helper;
 class Product extends \Magento\Framework\App\Helper\AbstractHelper
 {
     const SPECIAL_PRICE = 'special';
-
     const REGULAR_PRICE = 'regular';
+    const MAX_STARS_VALUE = 5;
 
     /**
      * @var \Magento\Review\Model\Review
@@ -47,7 +47,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getReviewSummary($product, $includeVotes = false)
     {
-        $reviewData = false;
+        $reviewData = [];
 
         if ($product) {
             $storeId = $this->storeManager->getStore()->getId();
@@ -59,30 +59,66 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             }
 
             if ($ratingSummary) {
-                $activeStars = ($ratingSummary->getRatingSummary()) ? (round($ratingSummary->getRatingSummary() / 10) / 2) : 0;
+                $activeStars = ($ratingSummary->getRatingSummary()) ? $this->getStarsAmount($ratingSummary->getRatingSummary()) : 0;
 
                 $reviewData = [
                     'data' => [
-                        'maxStars' => 5,
+                        'maxStars' => self::MAX_STARS_VALUE,
                         'activeStars' => $activeStars,
                         'count' => (int)$ratingSummary->getReviewsCount(),
-                        'votes' => array_fill(1, 5, 0)
+                        'votes' => array_fill(1, self::MAX_STARS_VALUE, 0),
+                        'ratings' => []
                     ]
                 ];
 
                 if ($includeVotes and $reviewData['data']['count']) {
-                    $votes = $this->voteCollection
-                        ->setEntityPkFilter($product->getId())
-                        ->setStoreFilter($storeId);
-
-                    foreach ($votes->getItems() AS $vote) {
-                        $reviewData['data']['votes'][$vote->getValue()]++;
-                    }
+                    $reviewData = $this->prepareAdditionalRatingData($reviewData, $product->getId(), $storeId);
                 }
             }
         }
 
         return $reviewData;
+    }
+
+    protected function prepareAdditionalRatingData($reviewData, $productId, $storeId)
+    {
+        $votes = $this->voteCollection
+            ->setEntityPkFilter($productId)
+            ->setStoreFilter($storeId);
+
+        $groupedVotes = [
+            'review' => [],
+            'rating' => []
+        ];
+
+        foreach ($votes->getItems() AS $vote) {
+            $vote->getData();
+            $groupedVotes['review'][$vote->getReviewId()][] = $vote->getPercent();
+            $groupedVotes['rating'][$vote->getRatingId()][] = $vote->getPercent();
+        }
+
+        foreach($groupedVotes as $type => $group){
+            foreach ($group as $typeId => $votes){
+                $starsAmount = $this->getStarsAmount($votes);
+
+                if($type == 'review'){
+                    $reviewData['data']['votes'][(int)$starsAmount]++;
+                }elseif($type == 'rating'){
+                    $reviewData['data']['ratings'][$typeId] = $starsAmount;
+                }
+            }
+        }
+
+        return $reviewData;
+    }
+
+    protected function getStarsAmount($value)
+    {
+        if(is_array($value)){
+            $value = array_sum($value) / count($value);
+        }
+
+        return round($value / 10) / 2;
     }
 
     /**
