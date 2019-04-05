@@ -6,119 +6,31 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 {
     const SPECIAL_PRICE = 'special';
     const REGULAR_PRICE = 'regular';
-    const MAX_STARS_VALUE = 5;
-
-    /**
-     * @var \Magento\Review\Model\Review
-     */
-    private $review;
-
-    /**
-     * Rating resource option model
-     *
-     * @var \Magento\Review\Model\ResourceModel\Rating\Option\Vote\Collection
-     */
-    protected $voteCollection;
-
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface
-     */
-    protected $storeManager;
 
     /**
      * @var \Magento\Framework\Stdlib\DateTime\DateTime
      */
     protected $dateTime;
 
+    /**
+     * @var Review
+     */
+    protected $reviewHelper;
+
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Review\Model\Review $review,
-        \Magento\Review\Model\ResourceModel\Rating\Option\Vote\Collection $voteCollection,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\Stdlib\DateTime\DateTime $dateTime
+        \Magento\Framework\Stdlib\DateTime\DateTime $dateTime,
+        \MageSuite\Frontend\Helper\Review $reviewHelper
     )
     {
         parent::__construct($context);
-        $this->review = $review;
-        $this->voteCollection = $voteCollection;
-        $this->storeManager = $storeManager;
         $this->dateTime = $dateTime;
+        $this->reviewHelper = $reviewHelper;
     }
 
     public function getReviewSummary($product, $includeVotes = false)
     {
-        $reviewData = [];
-
-        if ($product) {
-            $storeId = $this->storeManager->getStore()->getId();
-            $ratingSummary = $product->getRatingSummary();
-
-            if (!$ratingSummary) {
-                $this->review->getEntitySummary($product, $storeId);
-                $ratingSummary = $product->getRatingSummary();
-            }
-
-            if ($ratingSummary) {
-                $activeStars = ($ratingSummary->getRatingSummary()) ? $this->getStarsAmount($ratingSummary->getRatingSummary()) : 0;
-
-                $reviewData = [
-                    'data' => [
-                        'maxStars' => self::MAX_STARS_VALUE,
-                        'activeStars' => $activeStars,
-                        'count' => (int)$ratingSummary->getReviewsCount(),
-                        'votes' => array_fill(1, self::MAX_STARS_VALUE, 0),
-                        'ratings' => []
-                    ]
-                ];
-
-                if ($includeVotes and $reviewData['data']['count']) {
-                    $reviewData = $this->prepareAdditionalRatingData($reviewData, $product->getId(), $storeId);
-                }
-            }
-        }
-
-        return $reviewData;
-    }
-
-    protected function prepareAdditionalRatingData($reviewData, $productId, $storeId)
-    {
-        $votes = $this->voteCollection
-            ->setEntityPkFilter($productId)
-            ->setStoreFilter($storeId);
-
-        $groupedVotes = [
-            'review' => [],
-            'rating' => []
-        ];
-
-        foreach ($votes->getItems() AS $vote) {
-            $vote->getData();
-            $groupedVotes['review'][$vote->getReviewId()][] = $vote->getPercent();
-            $groupedVotes['rating'][$vote->getRatingId()][] = $vote->getPercent();
-        }
-
-        foreach($groupedVotes as $type => $group){
-            foreach ($group as $typeId => $votes){
-                $starsAmount = $this->getStarsAmount($votes);
-
-                if($type == 'review'){
-                    $reviewData['data']['votes'][(int)$starsAmount]++;
-                }elseif($type == 'rating'){
-                    $reviewData['data']['ratings'][$typeId] = $starsAmount;
-                }
-            }
-        }
-
-        return $reviewData;
-    }
-
-    protected function getStarsAmount($value)
-    {
-        if(is_array($value)){
-            $value = array_sum($value) / count($value);
-        }
-
-        return round($value / 10) / 2;
+        return $this->reviewHelper->getReviewSummary($product, $includeVotes);
     }
 
     /**
