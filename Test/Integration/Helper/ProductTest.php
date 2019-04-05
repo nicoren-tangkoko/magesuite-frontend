@@ -64,9 +64,14 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(1, $reviewSummary['data']['votes'][2]);
 
         $this->assertArrayHasKey('ratings', $reviewSummary['data']);
-        $this->assertEquals(2, $reviewSummary['data']['ratings'][2]);
-        $this->assertEquals(3, $reviewSummary['data']['ratings'][4]);
 
+        $this->assertEquals(1, $reviewSummary['data']['ratings'][1]['starsAmount']);
+        $this->assertEquals(2, $reviewSummary['data']['ratings'][2]['starsAmount']);
+        $this->assertEquals(3, $reviewSummary['data']['ratings'][3]['starsAmount']);
+
+        $this->assertEquals('Quality', $reviewSummary['data']['ratings'][1]['label']);
+        $this->assertEquals('Value', $reviewSummary['data']['ratings'][2]['label']);
+        $this->assertEquals('Price', $reviewSummary['data']['ratings'][3]['label']);
     }
 
     /**

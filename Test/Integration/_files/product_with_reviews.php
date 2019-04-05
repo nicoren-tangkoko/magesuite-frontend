@@ -2,7 +2,8 @@
 
 $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
 
-$product = $objectManager->create('Magento\Catalog\Model\Product');
+/** @var \Magento\Catalog\Model\Product $product */
+$product = $objectManager->create(\Magento\Catalog\Model\Product::class);
 
 $product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE)
     ->setId(555)
@@ -17,7 +18,8 @@ $product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE)
     ->setCanSaveCustomOptions(true)
     ->save();
 
-$product = $objectManager->create('Magento\Catalog\Model\Product');
+/** @var \Magento\Catalog\Model\Product $product */
+$product = $objectManager->create(\Magento\Catalog\Model\Product::class);
 
 $product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE)
     ->setId(556)
@@ -32,10 +34,10 @@ $product->setTypeId(\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE)
     ->setCanSaveCustomOptions(true)
     ->save();
 
-
 $storeId = 1;
 
-$review = $objectManager->get('Magento\Review\Model\Review')
+/** @var \Magento\Review\Model\Review $review */
+$review = $objectManager->create(\Magento\Review\Model\Review::class)
     ->setEntityPkValue(555)
     ->setStatusId(\Magento\Review\Model\Review::STATUS_APPROVED)
     ->setTitle('Test title')
@@ -47,19 +49,27 @@ $review = $objectManager->get('Magento\Review\Model\Review')
     ->setNickname('Test')
     ->save();
 
-$ratingOptions = array(
+$ratingOptions = [
     '1' => '1',
     '2' => '2',
-    '3' => '2',
-    '4' => '3'
-);
+    '3' => '3'
+];
 
 foreach ($ratingOptions AS $ratingId => $optionIds) {
-    $objectManager->get('Magento\Review\Model\Rating')
-        ->setRatingId($ratingId)
+    /** @var \Magento\Review\Model\Rating $rating */
+    $rating = $objectManager->create(\Magento\Review\Model\Rating::class);
+
+    $rating->load($ratingId)
+        ->setRatingCodes([$storeId => $rating->getRatingCode()])
+        ->setStores([$storeId])
+        ->save();
+
+    /** @var \Magento\Review\Model\Rating $rating */
+    $rating = $objectManager->create(\Magento\Review\Model\Rating::class);
+
+    $rating->load($ratingId)
         ->setReviewId($review->getId())
         ->addOptionVote($optionIds, 555);
-
 }
 
 $review->aggregate();
