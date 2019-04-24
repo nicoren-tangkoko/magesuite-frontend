@@ -103,11 +103,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $specialPriceFromDate = $product->getSpecialFromDate();
         $specialPriceToDate = $product->getSpecialToDate();
         $todayTimestamp = $this->dateTime->timestamp();
-        $magentoEdition = $this->getMagentoEdition();
 
-        if (!$specialPrice && $magentoEdition != self::MAGENTO_ENTERPRISE) {
+        if (!$specialPrice && !$this->isMagentoEnterprise()) {
             return false;
-        } elseif ($magentoEdition == self::MAGENTO_ENTERPRISE) {
+        } elseif ($this->isMagentoEnterprise()) {
             return $specialPrice;
         }
 
@@ -196,8 +195,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return self::REGULAR_PRICE;
     }
 
-    public function getMagentoEdition()
+    public function isMagentoEnterprise()
     {
-        return $this->magentoProductMetadata->getEdition();
+        return ($this->magentoProductMetadata->getEdition() == self::MAGENTO_ENTERPRISE) ? true : false;
     }
 }
