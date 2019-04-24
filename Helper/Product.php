@@ -197,6 +197,6 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function isMagentoEnterprise()
     {
-        return ($this->magentoProductMetadata->getEdition() == self::MAGENTO_ENTERPRISE) ? true : false;
+        return $this->magentoProductMetadata->getEdition() == self::MAGENTO_ENTERPRISE;
     }
 }
