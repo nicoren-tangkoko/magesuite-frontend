@@ -6,6 +6,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 {
     const SPECIAL_PRICE = 'special';
     const REGULAR_PRICE = 'regular';
+    const MAGENTO_ENTERPRISE = 'Enterprise';
 
     /**
      * @var \Magento\Framework\Stdlib\DateTime\DateTime
@@ -16,16 +17,22 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      * @var Review
      */
     protected $reviewHelper;
+    /**
+     * @var \Magento\Framework\App\ProductMetadataInterface
+     */
+    private $magentoProductMetadata;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\Stdlib\DateTime\DateTime $dateTime,
-        \MageSuite\Frontend\Helper\Review $reviewHelper
+        \MageSuite\Frontend\Helper\Review $reviewHelper,
+        \Magento\Framework\App\ProductMetadataInterface $magentoProductMetadata
     )
     {
         parent::__construct($context);
         $this->dateTime = $dateTime;
         $this->reviewHelper = $reviewHelper;
+        $this->magentoProductMetadata = $magentoProductMetadata;
     }
 
     public function getReviewSummary($product, $includeVotes = false)
@@ -97,8 +104,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $specialPriceToDate = $product->getSpecialToDate();
         $todayTimestamp = $this->dateTime->timestamp();
 
-        if (!$specialPrice) {
+        if (!$specialPrice && !$this->isMagentoEnterprise()) {
             return false;
+        } elseif ($this->isMagentoEnterprise()) {
+            return $specialPrice;
         }
 
         $salePrice = $finalPrice ? $finalPrice : $product->getFinalPrice();
@@ -184,5 +193,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return self::REGULAR_PRICE;
+    }
+
+    public function isMagentoEnterprise()
+    {
+        return $this->magentoProductMetadata->getEdition() == self::MAGENTO_ENTERPRISE;
     }
 }
