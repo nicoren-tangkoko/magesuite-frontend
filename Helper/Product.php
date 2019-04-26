@@ -106,8 +106,8 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
         if (!$specialPrice && !$this->isMagentoEnterprise()) {
             return false;
-        } elseif ($this->isMagentoEnterprise()) {
-            return $specialPrice;
+        } elseif ($specialPrice && $this->isMagentoEnterprise()) {
+            return true;
         }
 
         $salePrice = $finalPrice ? $finalPrice : $product->getFinalPrice();
