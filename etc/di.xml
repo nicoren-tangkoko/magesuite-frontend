@@ -96,6 +96,10 @@
         <plugin name="mark_simplified_bundle_as_not_configurable" type="\MageSuite\Frontend\Plugin\ProductTile\Helper\AddToCart\MarkSimplifiedBundleAsNotConfigurable"/>
     </type>
 
+    <type name="Magento\Bundle\Pricing\Render\FinalPriceBox">
+        <plugin name="hide_range_price_in_simplified_bundle" type="\MageSuite\Frontend\Plugin\Bundle\Pricing\Render\FinalPriceBox\HideRangePriceInSimplifiedBundle" />
+    </type>
+
     <type name="Magento\Framework\HTTP\PhpEnvironment\RemoteAddress">
         <arguments>
             <argument name="alternativeHeaders" xsi:type="array">
