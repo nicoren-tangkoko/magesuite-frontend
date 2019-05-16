@@ -34,10 +34,12 @@ class AddInformationMessageBeforeLogin
         $this->messageManager = $messageManager;
     }
 
-    public function beforeDispatch(\Magento\Framework\App\ActionInterface $subject, \Magento\Framework\App\RequestInterface $request)
+    public function afterDispatch(\Magento\Framework\App\ActionInterface $subject, $result)
     {
-        if ($this->authenticationState->isEnabled() && !$this->customerSession->authenticate()) {
+        if ($this->authenticationState->isEnabled() && !$this->customerSession->authenticate() and !$this->messageManager->hasMessages()) {
             $this->messageManager->addNotice(__('In order to use this feature please login or create an account.'));
         }
+
+        return $result;
     }
 }
