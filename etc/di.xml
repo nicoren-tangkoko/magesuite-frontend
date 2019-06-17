@@ -17,9 +17,6 @@
     <preference for="\MageSuite\Frontend\Service\Image\Optimizer"
                 type="\MageSuite\Frontend\Service\Image\CommandLine\Optimizer"/>
 
-    <preference for="\Magento\Catalog\Model\Indexer\Category\Product\Action\Full"
-                type="\MageSuite\Frontend\Model\Indexer\Category\Product\Action\Full"/>
-
     <preference for="\Magento\Catalog\Controller\Adminhtml\Category\Save"
                 type="\MageSuite\Frontend\Controller\Adminhtml\Category\Save"/>
 
