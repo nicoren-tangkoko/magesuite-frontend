@@ -7,6 +7,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     const SPECIAL_PRICE = 'special';
     const REGULAR_PRICE = 'regular';
     const MAGENTO_ENTERPRISE = 'Enterprise';
+    const MINIMAL_SALE_PERCENTAGE_PATH = 'catalog/frontend/minimal_sale_percentage';
 
     /**
      * @var \Magento\Framework\Stdlib\DateTime\DateTime
@@ -20,19 +21,26 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @var \Magento\Framework\App\ProductMetadataInterface
      */
-    private $magentoProductMetadata;
+    protected $magentoProductMetadata;
+
+    /**
+     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     */
+    protected $scopeConfig;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\Stdlib\DateTime\DateTime $dateTime,
         \MageSuite\Frontend\Helper\Review $reviewHelper,
-        \Magento\Framework\App\ProductMetadataInterface $magentoProductMetadata
+        \Magento\Framework\App\ProductMetadataInterface $magentoProductMetadata,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
     )
     {
         parent::__construct($context);
         $this->dateTime = $dateTime;
         $this->reviewHelper = $reviewHelper;
         $this->magentoProductMetadata = $magentoProductMetadata;
+        $this->scopeConfig = $scopeConfig;
     }
 
     public function getReviewSummary($product, $includeVotes = false)
@@ -154,7 +162,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             $roundDiscount = round($discountPercentage, 0);
         }
 
-        if ((int)$roundDiscount >= 5) {
+        if ((int)$roundDiscount >= $this->getMinimalSalePercentage()) {
             return $roundDiscount;
         }
 
@@ -198,5 +206,10 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     public function isMagentoEnterprise()
     {
         return $this->magentoProductMetadata->getEdition() == self::MAGENTO_ENTERPRISE;
+    }
+
+    protected function getMinimalSalePercentage()
+    {
+        return (int)$this->scopeConfig->getValue(self::MINIMAL_SALE_PERCENTAGE_PATH,\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 }
