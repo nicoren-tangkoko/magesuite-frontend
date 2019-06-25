@@ -3,5 +3,6 @@
     <update handle="styles"/>
     <head>
         <css src="MageSuite_Frontend::css/cs-logo.css" />
+        <link src="MageSuite_Frontend::js/cs-logo.js" />
     </head>
 </page>
