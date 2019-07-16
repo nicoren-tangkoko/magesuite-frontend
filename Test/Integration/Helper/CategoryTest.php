@@ -110,11 +110,10 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
             $this->categoryHelper->getImageTeaser($category)
         );
 
-        $this->assertEquals('Image Teaser Headline', $category->getImageTeaserHeadline());
-        $this->assertEquals('Image Teaser Subheadline', $category->getImageTeaserSubheadline());
-        $this->assertEquals(null, $category->getImageTeaserParagraph());
-        $this->assertEquals('Image Teaser Button Label', $category->getImageTeaserButtonLabel());
-        $this->assertEquals('url', $category->getImageTeaserButtonLink());
-        $this->assertEquals('http://localhost/index.php/url', $this->categoryHelper->prepareCategoryCustomUrl($category->getImageTeaserButtonLink()));
+        $this->assertEquals('Image Teaser Slogan', $category->getImageTeaserSlogan());
+        $this->assertEquals('Image Teaser Description', $category->getImageTeaserDescription());
+        $this->assertEquals('Image Teaser CTA Label', $category->getImageTeaserCtaLabel());
+        $this->assertEquals('url', $category->getImageTeaserCtaLink());
+        $this->assertEquals('http://localhost/index.php/url', $this->categoryHelper->prepareCategoryCustomUrl($category->getImageTeaserCtaLink()));
     }
 }
