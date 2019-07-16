@@ -15,7 +15,7 @@ $category
     ->setIsActive(true)
     ->setPosition(1)
     ->setAvailableSortBy(['position'])
-    ->setImageTeaserParagraph('Image Teaser Paragraph')
+    ->setImageTeaserDescription('Image Teaser Description')
     ->save();
 
 $category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
@@ -51,10 +51,10 @@ $category
     ->setIncludeInMenu(0)
     ->setCategoryIcon('icon.png')
     ->setImageTeaser('teaser.png')
-    ->setImageTeaserHeadline('Image Teaser Headline')
-    ->setImageTeaserSubheadline('Image Teaser Subheadline')
-    ->setImageTeaserButtonLabel('Image Teaser Button Label')
-    ->setImageTeaserButtonLink('url')
+    ->setImageTeaserSlogan('Image Teaser Slogan')
+    ->setImageTeaserDescription('Image Teaser Description')
+    ->setImageTeaserCtaLabel('Image Teaser CTA Label')
+    ->setImageTeaserCtaLink('url')
     ->save();
 
 $category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
