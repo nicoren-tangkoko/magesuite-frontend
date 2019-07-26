@@ -41,9 +41,11 @@ class SortAttributeOptions
 
             $sortedItems = [];
             foreach($items AS $item){
+                if(!isset($sortOrder[$item['value_index']])) continue;
                 $itemPosition = $sortOrder[$item['value_index']];
                 $sortedItems[$itemPosition] = $item;
             }
+
 
             ksort($sortedItems);
             return $sortedItems;
