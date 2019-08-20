@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Catalog\Model\ResourceModel\Category">
+        <plugin name="add_custom_url_to_children_collection" type="MageSuite\Frontend\Plugin\Catalog\Model\ResourceModel\Category\AddCustomUrlToChildrenCollection"
+                sortOrder="10"/>
+    </type>
+
+    <type name="Magento\Catalog\Model\Category">
+        <plugin name="set_category_custom_url" type="MageSuite\Frontend\Plugin\Catalog\Model\Category\SetCategoryCustomUrl"
+                sortOrder="10"/>
+    </type>
+
+    <type name="Magento\UrlRewrite\Model\Storage\AbstractStorage">
+        <plugin name="set_category_custom_url" type="MageSuite\Frontend\Plugin\UrlRewrite\Model\Storage\AbstractStorage\SetCategoryCustomUrl"
+                sortOrder="10"/>
+    </type>
+
+    <type name="MageSuite\Frontend\Plugin\UrlRewrite\Model\Storage\AbstractStorage\SetCategoryCustomUrl">
+        <arguments>
+            <argument name="categoryResource" xsi:type="object">Magento\Catalog\Model\ResourceModel\Category\Proxy</argument>
+            <argument name="categoryHelper" xsi:type="object">MageSuite\Frontend\Helper\Category\Proxy</argument>
+        </arguments>
+    </type>
+</config>

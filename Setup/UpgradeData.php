@@ -68,10 +68,10 @@ class UpgradeData implements \Magento\Framework\Setup\UpgradeDataInterface
 
     protected function upgradeToVersion002()
     {
-        if (!$this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, 'category_custom_url')) {
+        if (!$this->eavSetup->getAttributeId(\Magento\Catalog\Model\Category::ENTITY, \MageSuite\Frontend\Helper\Category::CATEGORY_CUSTOM_URL)) {
             $this->eavSetup->addAttribute(
                 \Magento\Catalog\Model\Category::ENTITY,
-                'category_custom_url',
+                \MageSuite\Frontend\Helper\Category::CATEGORY_CUSTOM_URL,
                 [
                     'type' => 'varchar',
                     'label' => 'Category Url',
