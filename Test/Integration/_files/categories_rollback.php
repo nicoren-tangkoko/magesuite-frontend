@@ -1,38 +1,17 @@
 <?php
 
-/** @var \Magento\Framework\Registry $registry */
-$registry = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->get('Magento\Framework\Registry');
+$objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+$registry = $objectManager->get('Magento\Framework\Registry');
 
 $registry->unregister('isSecureArea');
 $registry->register('isSecureArea', true);
 
-/** @var $category \Magento\Catalog\Model\Category */
-$category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
-$category->load(333);
-if ($category->getId()) {
-    $category->delete();
-}
+$categoryIds = [333,334,335,336,337,338];
 
-$category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
-$category->load(334);
-if ($category->getId()) {
-    $category->delete();
-}
+foreach($categoryIds as $categoryId){
+    $category = $objectManager->create('Magento\Catalog\Model\Category')->load($categoryId);
 
-$category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
-$category->load(335);
-if ($category->getId()) {
-    $category->delete();
-}
-
-$category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
-$category->load(336);
-if ($category->getId()) {
-    $category->delete();
-}
-
-$category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
-$category->load(337);
-if ($category->getId()) {
-    $category->delete();
+    if ($category->getId()) {
+        $category->delete();
+    }
 }

@@ -16,7 +16,8 @@ $category
     ->setPosition(1)
     ->setAvailableSortBy(['position'])
     ->setImageTeaserDescription('Image Teaser Description')
-    ->save();
+    ->save()
+    ->reindex();
 
 $category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
 $category->isObjectNew(true);
@@ -32,7 +33,8 @@ $category
     ->setIsActive(true)
     ->setPosition(1)
     ->setAvailableSortBy(['position'])
-    ->save();
+    ->save()
+    ->reindex();
 
 $category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
 $category->isObjectNew(true);
@@ -55,7 +57,8 @@ $category
     ->setImageTeaserDescription('Image Teaser Description')
     ->setImageTeaserCtaLabel('Image Teaser CTA Label')
     ->setImageTeaserCtaLink('url')
-    ->save();
+    ->save()
+    ->reindex();
 
 $category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
 $category->isObjectNew(true);
@@ -72,7 +75,8 @@ $category
     ->setPosition(1)
     ->setAvailableSortBy(['position'])
     ->setIncludeInMenu(0)
-    ->save();
+    ->save()
+    ->reindex();
 
 
 $category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
@@ -89,4 +93,23 @@ $category
     ->setIsActive(true)
     ->setPosition(1)
     ->setAvailableSortBy(['position'])
-    ->save();
+    ->save()
+    ->reindex();
+
+$category = \Magento\TestFramework\Helper\Bootstrap::getObjectManager()->create('Magento\Catalog\Model\Category');
+$category->isObjectNew(true);
+$category
+    ->setId(338)
+    ->setCreatedAt('2014-06-23 09:50:07')
+    ->setName('Category with custom url')
+    ->setParentId(2)
+    ->setPath('1/2/338')
+    ->setLevel(3)
+    ->setAvailableSortBy('name')
+    ->setDefaultSortBy('name')
+    ->setIsActive(true)
+    ->setPosition(1)
+    ->setAvailableSortBy(['position'])
+    ->setCategoryCustomUrl('contact')
+    ->save()
+    ->reindex();

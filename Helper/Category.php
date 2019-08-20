@@ -7,6 +7,8 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     const CACHE_LIFETIME = 86400;
     const CACHE_TAG = 'layered_navigation_tree_%s_%s_%s';
 
+    const CATEGORY_CUSTOM_URL = 'category_custom_url';
+
     /**
      * @var \Magento\Framework\Registry
      */
