@@ -187,4 +187,8 @@
     <type name="Magento\Catalog\Block\Product\ListProduct">
         <plugin name="add_bundle_selections_to_simplified_bundle" type="MageSuite\Frontend\Plugin\Catalog\Block\Product\ListProduct\AddBundleSelectionsToSimplifiedBundle" />
     </type>
+
+    <type name="Magento\Framework\App\ProductMetadataInterface">
+        <plugin name="cache_magento_version" type="MageSuite\Frontend\Plugin\Framework\App\ProductMetadataInterface\CacheVersion" />
+    </type>
 </config>
