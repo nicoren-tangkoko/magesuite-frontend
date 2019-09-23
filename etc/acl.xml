@@ -6,7 +6,7 @@
                 <resource id="Magento_Backend::stores">
                     <resource id="Magento_Backend::stores_settings">
                         <resource id="Magento_Config::config">
-                            <resource id="MageSuite_Frontend::config_order" title="MageSuite Order"/>
+                            <resource id="MageSuite_Frontend::config_order" title="MageSuite Frontend"/>
                         </resource>
                     </resource>
                 </resource>
