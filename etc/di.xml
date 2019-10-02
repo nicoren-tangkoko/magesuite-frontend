@@ -14,8 +14,6 @@
     <preference for="\MageSuite\Frontend\Service\AssetLocator"
                 type="\MageSuite\Frontend\Service\MagentoAssetLocator"/>
 
-    <preference for="\MageSuite\Frontend\Service\Image\Optimizer"
-                type="\MageSuite\Frontend\Service\Image\CommandLine\Optimizer"/>
 
     <preference for="\Magento\Catalog\Controller\Adminhtml\Category\Save"
                 type="\MageSuite\Frontend\Controller\Adminhtml\Category\Save"/>
@@ -105,18 +103,6 @@
         </arguments>
     </type>
 
-    <type name="ImageOptimizer\OptimizerFactory">
-        <arguments>
-            <argument name="options" xsi:type="array">
-                <item name="jpegoptim_options" xsi:type="array">
-                    <item name="0" xsi:type="string">--strip-all</item>
-                    <item name="1" xsi:type="string">--all-progressive</item>
-                    <item name="2" xsi:type="string">--max=80</item>
-                </item>
-            </argument>
-        </arguments>
-    </type>
-
     <type name="Magento\Cms\Model\Wysiwyg\Images\Storage">
         <arguments>
             <argument name="extensions" xsi:type="array">
@@ -151,13 +137,7 @@
         <plugin name="directivePlugin" type="\MageSuite\Frontend\Plugin\PreserveTransparencyOnModal" sortOrder="1" />
     </type>
 
-    <type name="Magento\Framework\Console\CommandList">
-        <arguments>
-            <argument name="commands" xsi:type="array">
-                <item name="image_optimize" xsi:type="object">MageSuite\Frontend\Console\Command\OptimizeImage</item>
-            </argument>
-        </arguments>
-    </type>
+
 
     <type name="Magento\Catalog\Block\Product\View">
         <plugin name="re_add_breadcrumbs_to_product_view" type="MageSuite\Frontend\Plugin\ReAddBreadcrumbsToProductView" />

@@ -22,7 +22,7 @@ class Resizer
     private $logger;
 
     /**
-     * @var \MageSuite\Frontend\Service\Image\Optimizer
+     * @var \MageSuite\ImageOptimization\Service\Image\Optimizer
      */
     private $imageOptimizer;
 
@@ -36,7 +36,7 @@ class Resizer
         \Magento\Framework\Filesystem $filesystem,
         \Psr\Log\LoggerInterface $logger,
         \Magento\Framework\Image\AdapterFactory $imageAdapterFactory,
-        \MageSuite\Frontend\Service\Image\Optimizer $imageOptimizer
+        \MageSuite\ImageOptimization\Service\Image\Optimizer $imageOptimizer
     )
     {
         $this->filesystem = $filesystem;
