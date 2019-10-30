@@ -78,8 +78,8 @@ class FeaturedProductsTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('stock', $featuredProducts[0]);
         $this->assertArrayHasKey('swatches', $featuredProducts[0]);
 
-        $this->assertEquals('Second product', $featuredProducts[0]['name']);
-        $this->assertEquals('First product', $featuredProducts[1]['name']);
+        $this->assertEquals('Second product', $featuredProducts[1]['name']);
+        $this->assertEquals('First product', $featuredProducts[0]['name']);
 
     }
 }
