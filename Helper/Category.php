@@ -8,6 +8,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     const CACHE_TAG = 'layered_navigation_tree_%s_%s_%s';
 
     const CATEGORY_CUSTOM_URL = 'category_custom_url';
+    const CATEGORY_TOP_LEVEL = 2;
 
     /**
      * @var \Magento\Framework\Registry
@@ -52,7 +53,9 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @var \Magento\Eav\Model\Config
      */
-    private $eavConfig;
+    protected $eavConfig;
+
+    protected $rootCategoryId;
 
     public function __construct(
         \Magento\Framework\Registry $registry,
@@ -64,8 +67,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Catalog\Model\ResourceModel\Category $categoryResource,
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
         \Magento\Eav\Model\Config $eavConfig
-    )
-    {
+    ) {
         $this->registry = $registry;
         $this->categoryTree = $categoryTree;
         $this->productDataProvider = $productDataProvider;
@@ -92,37 +94,35 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         $categoryNode = unserialize($this->cache->load($cacheTag));
 
         if (!$categoryNode) {
-
             $configuration = [
-                'root_category_id' => 2,
+                'root_category_id' => $this->getRootCategoryId(),
                 'only_included_in_menu' => 0
             ];
 
-            $categoryTreeId = ($returnCurrent OR $category->getLevel() == 2) ? $category->getId() : $category->getParentId();
+            $categoryTreeId = ($returnCurrent or $category->getLevel() == self::CATEGORY_TOP_LEVEL) ? $category->getId() : $category->getParentId();
             $categoryNode = $this->categoryTree->getCategoryTree($configuration, $categoryTreeId);
 
             $this->cache->save(serialize($categoryNode), $cacheTag, ['layered_navigation_tree'], self::CACHE_LIFETIME);
         }
 
         $categoryNode['current'] = true;
-        if ($category->getLevel() > 2) {
+        if ($category->getLevel() > self::CATEGORY_TOP_LEVEL) {
             $categoryNode['children'][$category->getId()]['current'] = true;
         }
 
         return $categoryNode;
     }
 
-
     protected function getFeaturedProductsIds($category)
     {
         $featuredProducts = $category->getFeaturedProducts();
 
-        if($featuredProducts == '{}'){
+        if ($featuredProducts == '{}') {
             $featuredProducts = $this->categoryResource
                 ->getAttributeRawValue($category->getId(), 'featured_products', 0);
         }
 
-        if(!$featuredProducts OR $featuredProducts == '{}'){
+        if (!$featuredProducts or $featuredProducts == '{}') {
             return [];
         }
 
@@ -133,7 +133,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $featuredProductsIds = $this->getFeaturedProductsIds($category);
 
-        if(empty($featuredProductsIds)){
+        if (empty($featuredProductsIds)) {
             return [];
         }
 
@@ -145,11 +145,11 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function prepareCategoryCustomUrl($customUrl)
     {
-        if(!$customUrl){
+        if (!$customUrl) {
             return null;
         }
 
-        if(strpos($customUrl, 'http') !== false){
+        if (strpos($customUrl, 'http') !== false) {
             return $customUrl;
         }
 
@@ -211,5 +211,14 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return $view->getValue();
+    }
+
+    protected function getRootCategoryId()
+    {
+        if (empty($this->rootCategoryId)) {
+            $this->rootCategoryId = $this->storeManager->getStore()->getRootCategoryId();
+        }
+
+        return $this->rootCategoryId;
     }
 }

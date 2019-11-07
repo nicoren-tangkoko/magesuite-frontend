@@ -46,7 +46,7 @@ class Tree
         $flat = [];
         $categories = [];
 
-        foreach ($collection as $category){
+        foreach ($collection as $category) {
             $additionalData = [
                 'url' => $category->getUrl(),
                 'products_count' => $this->categoryHelper->getNumberOfProducts($category),
@@ -63,29 +63,30 @@ class Tree
 
         $categoryFlat = [];
 
-        $builder = function($siblings) use (&$builder, $categories, &$categoryFlat, $flat, $currentCategories) {
+        $builder = function ($siblings) use (&$builder, $categories, &$categoryFlat, $flat, $currentCategories) {
             foreach ($siblings as $k => $sibling) {
-                if(!$sibling['is_active']){
+                if (!$sibling['is_active']) {
                     continue;
                 }
 
                 $id = $sibling['entity_id'];
 
-                if(isset($categories[$id])) {
+                if (isset($categories[$id])) {
                     $sibling['children'] = $builder($categories[$id]);
                 }
 
                 $path = $this->preparePath($sibling['path']);
 
-                foreach($path AS $categoryId){
-                    if($id == $categoryId){ continue; }
+                foreach ($path as $categoryId) {
+                    if ($id == $categoryId) {
+                        continue;
+                    }
                     $sibling['parents'][$categoryId] = $flat[$categoryId];
                 }
 
                 $siblings[$k] = $sibling;
                 $categoryFlat[$id] = &$siblings[$k];
             }
-
 
             return $siblings;
         };
@@ -103,11 +104,11 @@ class Tree
         $this->rootCategoryId = isset($configuration['root_category_id']) ? $configuration['root_category_id'] : 0;
         $onlyIncludedInMenu = isset($configuration['only_included_in_menu']) ? $configuration['only_included_in_menu'] : 0;
 
-        if(!$this->rootCategoryId){
+        if (!$this->rootCategoryId) {
             $this->rootCategoryId = $this->storeManager->getStore()->getRootCategoryId();
         }
 
-        if($this->rootCategoryId == $categoryId){
+        if ($this->rootCategoryId == $categoryId) {
             return false;
         }
 
@@ -120,17 +121,17 @@ class Tree
 
         $categoryTree = unserialize($this->cache->load($cacheTag));
 
-        if(!$categoryTree OR ($categoryId AND !isset($categoryTree['flat'][$categoryId]))){
+        if (!$categoryTree or ($categoryId and !isset($categoryTree['flat'][$categoryId]))) {
             $categoryCollection = $this->getCategoriesFromCollection($configuration);
             $categoryTree = $this->buildTree($categoryCollection, $currentCategories);
 
             $this->cache->save(serialize($categoryTree), $cacheTag, ['categories_tree'], self::CACHE_LIFETIME);
         }
 
-        if($categoryId){
+        if ($categoryId) {
             $category = isset($categoryTree['flat'][$categoryId]) ? $categoryTree['flat'][$categoryId] : false;
 
-            if(is_array($category)) {
+            if (is_array($category)) {
                 $category = $this->markCurrentCategories($category, $currentCategories);
             }
 
@@ -147,7 +148,7 @@ class Tree
         $categoryCollection->addFieldToFilter('is_active', 1);
         $categoryCollection->setOrder('position');
 
-        if(isset($configuration['only_included_in_menu']) && $configuration['only_included_in_menu']){
+        if (isset($configuration['only_included_in_menu']) && $configuration['only_included_in_menu']) {
             $categoryCollection->addFieldToFilter('include_in_menu', 1);
         }
 
@@ -166,19 +167,20 @@ class Tree
         return $pathIds;
     }
 
-    protected function markCurrentCategories($category, $currentCategories) {
-        if(in_array($category['entity_id'], $currentCategories)) {
+    protected function markCurrentCategories($category, $currentCategories)
+    {
+        if (in_array($category['entity_id'], $currentCategories)) {
             $category['current'] = true;
         }
 
-        if(!empty($category['parents'])){
-            foreach($category['parents'] as &$parent) {
+        if (!empty($category['parents'])) {
+            foreach ($category['parents'] as &$parent) {
                 $parent = $this->markCurrentCategories($parent, $currentCategories);
             }
         }
 
-        if(!empty($category['children'])){
-            foreach($category['children'] as &$child) {
+        if (!empty($category['children'])) {
+            foreach ($category['children'] as &$child) {
                 $child = $this->markCurrentCategories($child, $currentCategories);
             }
         }
