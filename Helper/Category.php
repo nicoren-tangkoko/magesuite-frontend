@@ -13,7 +13,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @var \Magento\Framework\Registry
      */
-    private $registry;
+    protected $registry;
 
     /**
      * @var \MageSuite\Frontend\Model\Category\Tree
