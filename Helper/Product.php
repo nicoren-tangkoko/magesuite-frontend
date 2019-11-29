@@ -7,40 +7,32 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     const SPECIAL_PRICE = 'special';
     const REGULAR_PRICE = 'regular';
     const MAGENTO_ENTERPRISE = 'Enterprise';
-    const MINIMAL_SALE_PERCENTAGE_PATH = 'catalog/frontend/minimal_sale_percentage';
 
     /**
-     * @var \Magento\Framework\Stdlib\DateTime\DateTime
-     */
-    protected $dateTime;
-
-    /**
-     * @var Review
+     * @var \MageSuite\Frontend\Helper\Review
      */
     protected $reviewHelper;
+
     /**
      * @var \Magento\Framework\App\ProductMetadataInterface
      */
     protected $magentoProductMetadata;
 
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var \MageSuite\Frontend\Helper\Configuration
      */
-    protected $scopeConfig;
+    protected $configuration;
 
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Framework\Stdlib\DateTime\DateTime $dateTime,
         \MageSuite\Frontend\Helper\Review $reviewHelper,
         \Magento\Framework\App\ProductMetadataInterface $magentoProductMetadata,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig
-    )
-    {
+        \MageSuite\Frontend\Helper\Configuration $configuration
+    ) {
         parent::__construct($context);
-        $this->dateTime = $dateTime;
         $this->reviewHelper = $reviewHelper;
         $this->magentoProductMetadata = $magentoProductMetadata;
-        $this->scopeConfig = $scopeConfig;
+        $this->configuration = $configuration;
     }
 
     public function getReviewSummary($product, $includeVotes = false)
@@ -84,54 +76,37 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function isOnSale($product, $finalPrice = null)
     {
-        if (in_array($product->getTypeId(), ['simple', 'bundle'])) {
+        if (in_array($product->getTypeId(), [\Magento\Catalog\Model\Product\Type::TYPE_SIMPLE, \Magento\Bundle\Model\Product\Type::TYPE_CODE])) {
             return $this->checkIsProductOnSale($product, $finalPrice);
         }
 
-        if ($product->getTypeId() == 'configurable') {
+        if ($product->getTypeId() == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
             $simpleProducts = $product->getTypeInstance()->getUsedProducts($product);
-            foreach ($simpleProducts as $simpleProduct) {
-                $result = $this->checkIsProductOnSale($simpleProduct, $finalPrice);
 
-                if ($result) {
-                    return true;
+            foreach ($simpleProducts as $simpleProduct) {
+                $isProductOnSale = $this->checkIsProductOnSale($simpleProduct, $finalPrice);
+
+                if (!$isProductOnSale) {
+                    continue;
                 }
+
+                return true;
             }
         }
+
         return false;
     }
 
     public function checkIsProductOnSale($product, $finalPrice = null)
     {
-        if ($finalPrice and $product->getPrice() > $finalPrice) {
-            return true;
-        }
+        $finalPrice = $finalPrice ?? $product->getFinalPrice();
+        $productPrice = $product->getPrice();
 
-        $specialPrice = $product->getSpecialPrice();
-        $specialPriceFromDate = $product->getSpecialFromDate();
-        $specialPriceToDate = $product->getSpecialToDate();
-        $todayTimestamp = $this->dateTime->timestamp();
-
-        if (!$specialPrice && !$this->isMagentoEnterprise()) {
-            return false;
-        } elseif ($specialPrice && $this->isMagentoEnterprise()) {
-            return true;
-        }
-
-        $salePrice = $finalPrice ? $finalPrice : $product->getFinalPrice();
-        if ($product->getPrice() <= $salePrice and $product->getTypeId() !== 'bundle') {
+        if (empty($productPrice)) {
             return false;
         }
 
-        if ($todayTimestamp >= strtotime($specialPriceFromDate) && is_null($specialPriceToDate)) {
-            return true;
-        }
-
-        if (is_null($specialPriceFromDate) && $todayTimestamp <= strtotime($specialPriceToDate)) {
-            return true;
-        }
-
-        if ($todayTimestamp >= strtotime($specialPriceFromDate) && $todayTimestamp <= strtotime($specialPriceToDate)) {
+        if ($productPrice > $finalPrice) {
             return true;
         }
 
@@ -140,34 +115,36 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getSalePercentage($product, $finalPrice = null)
     {
+        $finalPrice = $finalPrice ?? $product->getFinalPrice();
+
         if (!$this->isOnSale($product, $finalPrice)) {
             return false;
         }
 
         $regularPrice = $product->getPrice();
-        $salePrice = $finalPrice ? $finalPrice : $product->getFinalPrice();
 
-        if (!$regularPrice && !in_array($product->getTypeId(), ['configurable', 'bundle'])) {
+        if (!$regularPrice && !in_array($product->getTypeId(), [\Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE, \Magento\Bundle\Model\Product\Type::TYPE_CODE])) {
             return false;
         }
 
-        if ($product->getTypeId() == 'configurable') {
-            list($regularPrice, $salePrice) = $this->getConfigurablePrices($product);
+        if ($product->getTypeId() == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
+            list($regularPrice, $finalPrice) = $this->getConfigurablePrices($product);
         }
 
-        if ($product->getTypeId() == 'bundle') {
+        if ($product->getTypeId() == \Magento\Bundle\Model\Product\Type::TYPE_CODE) {
             $roundDiscount = round(100 - $product->getSpecialPrice());
         } else {
-            $discountPercentage = (($regularPrice - $salePrice) / $regularPrice) * 100;
+            $discountPercentage = (($regularPrice - $finalPrice) / $regularPrice) * 100;
             $roundDiscount = round($discountPercentage, 0);
         }
 
-        if ((int)$roundDiscount >= $this->getMinimalSalePercentage()) {
+        if ((int)$roundDiscount >= $this->configuration->getMinimalSalePercentage()) {
             return $roundDiscount;
         }
 
         return false;
     }
+
 
     public function getConfigurablePrices($product)
     {
@@ -206,10 +183,5 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     public function isMagentoEnterprise()
     {
         return $this->magentoProductMetadata->getEdition() == self::MAGENTO_ENTERPRISE;
-    }
-
-    protected function getMinimalSalePercentage()
-    {
-        return (int)$this->scopeConfig->getValue(self::MINIMAL_SALE_PERCENTAGE_PATH,\Magento\Store\Model\ScopeInterface::SCOPE_STORE);
     }
 }
