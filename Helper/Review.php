@@ -54,20 +54,26 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
         if ($product) {
             $storeId = $this->storeManager->getStore()->getId();
             $ratingSummary = $product->getRatingSummary();
+            $reviewsCount = $product->getReviewsCount();
 
             if (!$ratingSummary) {
                 $this->review->getEntitySummary($product, $storeId);
                 $ratingSummary = $product->getRatingSummary();
             }
+            // Since 2.3.3 rating summary is being returned directly, not as an object.
+            if (is_object($ratingSummary)) {
+                $reviewsCount = $ratingSummary->getReviewsCount();
+                $ratingSummary = $ratingSummary->getRatingSummary();
+            }
 
             if ($ratingSummary) {
-                $activeStars = ($ratingSummary->getRatingSummary()) ? $this->getStarsAmount($ratingSummary->getRatingSummary()) : 0;
+                $activeStars = $ratingSummary ? $this->getStarsAmount($ratingSummary) : 0;
 
                 $reviewData = [
                     'data' => [
                         'maxStars' => self::MAX_STARS_VALUE,
                         'activeStars' => $activeStars,
-                        'count' => (int)$ratingSummary->getReviewsCount(),
+                        'count' => $reviewsCount,
                         'votes' => array_fill(1, self::MAX_STARS_VALUE, 0),
                         'ratings' => []
                     ]
