@@ -49,7 +49,15 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getReviewSummary($product, $includeVotes = false)
     {
-        $reviewData = [];
+        $reviewData = [
+            'data' => [
+                'maxStars' => self::MAX_STARS_VALUE,
+                'activeStars' => 0,
+                'count' => 0,
+                'votes' => array_fill(1, self::MAX_STARS_VALUE, 0),
+                'ratings' => []
+            ]
+        ];
 
         if ($product) {
             $storeId = $this->storeManager->getStore()->getId();
@@ -67,19 +75,10 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
             }
 
             if ($ratingSummary) {
-                $activeStars = $ratingSummary ? $this->getStarsAmount($ratingSummary) : 0;
+                $reviewData['data']['activeStars'] = $ratingSummary ? $this->getStarsAmount($ratingSummary) : 0;
+                $reviewData['data']['count'] = $reviewsCount;
 
-                $reviewData = [
-                    'data' => [
-                        'maxStars' => self::MAX_STARS_VALUE,
-                        'activeStars' => $activeStars,
-                        'count' => $reviewsCount,
-                        'votes' => array_fill(1, self::MAX_STARS_VALUE, 0),
-                        'ratings' => []
-                    ]
-                ];
-
-                if ($includeVotes and $reviewData['data']['count']) {
+                if ($includeVotes && $reviewData['data']['count']) {
                     $reviewData = $this->prepareAdditionalRatingData($reviewData, $product->getId(), $storeId);
                 }
             }
