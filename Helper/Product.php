@@ -99,8 +99,12 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function checkIsProductOnSale($product, $finalPrice = null)
     {
-        $finalPrice = $finalPrice ?? $product->getFinalPrice();
-        $productPrice = $product->getPrice();
+        
+        if (empty($finalPrice)) {
+            $finalPrice = $product->getPriceInfo()->getPrice(\Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE)->getAmount()->getValue();
+        }
+
+        $productPrice = $product->getPriceInfo()->getPrice(\Magento\Catalog\Pricing\Price\RegularPrice::PRICE_CODE)->getAmount()->getValue();
 
         if (empty($productPrice)) {
             return false;
@@ -115,7 +119,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getSalePercentage($product, $finalPrice = null)
     {
-        $finalPrice = $finalPrice ?? $product->getFinalPrice();
+        if (empty($finalPrice)) {
+            $finalPrice = $product->getPriceInfo()->getPrice(\Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE)->getAmount()->getValue();
+        }
 
         if (!$this->isOnSale($product, $finalPrice)) {
             return false;
