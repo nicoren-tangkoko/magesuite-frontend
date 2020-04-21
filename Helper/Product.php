@@ -127,7 +127,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
 
-        $regularPrice = $product->getPrice();
+        $regularPrice = $product->getPriceInfo()->getPrice(\Magento\Catalog\Pricing\Price\RegularPrice::PRICE_CODE)->getAmount()->getValue();
 
         if (!$regularPrice && !in_array($product->getTypeId(), [\Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE, \Magento\Bundle\Model\Product\Type::TYPE_CODE])) {
             return false;
