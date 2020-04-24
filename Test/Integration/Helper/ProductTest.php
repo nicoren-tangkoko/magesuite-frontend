@@ -51,6 +51,11 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         require __DIR__ . '/../_files/sale_product.php';
     }
 
+    public static function loadProductWithTax()
+    {
+        require __DIR__ . '/../_files/product_with_tax.php';
+    }
+
     /**
      * @magentoAppArea frontend
      * @magentoDbIsolation enabled
@@ -160,6 +165,20 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $salePercentage = $this->productHelper->getSalePercentage($product);
 
         $this->assertEquals(35, $salePercentage);
+    }
+
+    /**
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
+     * @magentoDataFixture loadProductWithTax
+     * @magentoConfigFixture current_store tax/calculation/price_includes_tax 0
+     * @magentoConfigFixture current_store tax/display/type 2
+     */
+    public function testItReturnsCorrectSalePercentageForProductWithTax()
+    {
+        $product = $this->productRepository->get('product_with_tax');
+        $salePercentage = $this->productHelper->getSalePercentage($product);
+        $this->assertEquals(50, $salePercentage);
     }
 
     /**
