@@ -1,9 +1,4 @@
 <?php
-/**
- * Copyright © Magento, Inc. All rights reserved.
- * See COPYING.txt for license details.
- */
-
 /** @var $objectManager \Magento\TestFramework\ObjectManager */
 $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
 $customerTaxClass = $objectManager->create(\Magento\Tax\Model\ClassModel::class)->load('Retail Customer', 'class_name');
