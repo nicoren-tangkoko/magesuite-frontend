@@ -176,8 +176,7 @@ class ProductTest extends \PHPUnit\Framework\TestCase
      */
     public function testItReturnsCorrectSalePercentageForProductWithTax()
     {
-        $product = $this->productRepository->get('product_with_daily_deal');
-        $finalPriceWithoutDailyDeal = $product->getPriceInfo()->getPrice(\MageSuite\DailyDeal\Pricing\Price\FinalPriceWithoutDailyDeal::PRICE_CODE)->getAmount()->getValue();
+        $product = $this->productRepository->get('product_with_tax');
         $salePercentage = $this->productHelper->getSalePercentage($product);
         $this->assertEquals(50, $salePercentage);
     }
