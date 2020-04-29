@@ -5,6 +5,7 @@
         <catalog>
             <frontend>
                 <minimal_sale_percentage>5</minimal_sale_percentage>
+                <display_discount_badges_per_product>0</display_discount_badges_per_product>
             </frontend>
         </catalog>
         <dev>

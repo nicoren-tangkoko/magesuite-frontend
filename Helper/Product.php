@@ -133,15 +133,16 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
             return false;
         }
 
-        if ($product->getTypeId() == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
-            list($regularPrice, $finalPrice) = $this->getConfigurablePrices($product);
-        }
-
-        if ($product->getTypeId() == \Magento\Bundle\Model\Product\Type::TYPE_CODE) {
-            $roundDiscount = round(100 - $product->getSpecialPrice());
-        } else {
-            $discountPercentage = (($regularPrice - $finalPrice) / $regularPrice) * 100;
-            $roundDiscount = round($discountPercentage, 0);
+        switch($product->getTypeId()) {
+            case \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE:
+                $configurableDiscounts = $this->getConfigurableDiscounts($product);
+                $roundDiscount = max($configurableDiscounts);
+                break;
+            case \Magento\Bundle\Model\Product\Type::TYPE_CODE:
+                $roundDiscount = round(100 - $product->getSpecialPrice());
+                break;
+            default:
+                $roundDiscount = $this->calculateDiscountPercent($regularPrice, $finalPrice);
         }
 
         if ((int)$roundDiscount >= $this->configuration->getMinimalSalePercentage()) {
@@ -151,20 +152,24 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return false;
     }
 
-
-    public function getConfigurablePrices($product)
+    public function getConfigurableDiscounts($product)
     {
         $simpleProducts = $product->getTypeInstance()->getUsedProducts($product);
-
-        $regularPrice = 0;
-        $salePrice = $product->getFinalPrice();
+        $configurableDiscounts = [];
 
         foreach ($simpleProducts as $simpleProduct) {
-            $regularPrice = $regularPrice ? max($simpleProduct->getPrice(), $regularPrice) : $simpleProduct->getPrice();
-            $salePrice = $salePrice ? min($simpleProduct->getFinalPrice(), $salePrice) : $simpleProduct->getFinalPrice();
+            $configurableDiscounts[$simpleProduct->getId()] = $this->calculateDiscountPercent($simpleProduct->getPrice(), $simpleProduct->getFinalPrice());
         }
 
-        return [$regularPrice, $salePrice];
+        if(empty($configurableDiscounts)){
+            $configurableDiscounts[$product->getId()] = $this->calculateDiscountPercent($product->getPrice(), $product->getFinalPrice());
+        }
+
+        return $configurableDiscounts;
+    }
+
+    public function getDisplayDiscountBadgesPerProduct(){
+        return $this->configuration->getDisplayDiscountBadgesPerProduct();
     }
 
     public function getAddToCartUrl($productId)
@@ -189,5 +194,9 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     public function isMagentoEnterprise()
     {
         return $this->magentoProductMetadata->getEdition() == self::MAGENTO_ENTERPRISE;
+    }
+
+    private function calculateDiscountPercent($regularPrice, $finalPrice){
+        return round((($regularPrice - $finalPrice) / $regularPrice) * 100, 0);
     }
 }

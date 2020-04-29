@@ -7,7 +7,9 @@ $productRepository = Bootstrap::getObjectManager()
     ->get(ProductRepositoryInterface::class);
 
 $simpleProduct = $productRepository->get('simple_20');
-
 $simpleProduct->setSpecialPrice(6.5);
+$productRepository->save($simpleProduct);
 
+$simpleProduct = $productRepository->get('simple_10');
+$simpleProduct->setSpecialPrice(1);
 $productRepository->save($simpleProduct);
