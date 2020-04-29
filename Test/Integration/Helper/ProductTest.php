@@ -51,11 +51,6 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         require __DIR__ . '/../_files/sale_product.php';
     }
 
-    public static function loadProductWithTax()
-    {
-        require __DIR__ . '/../_files/product_with_tax.php';
-    }
-
     /**
      * @magentoAppArea frontend
      * @magentoDbIsolation enabled
@@ -138,13 +133,28 @@ class ProductTest extends \PHPUnit\Framework\TestCase
      * @magentoDataFixture Magento/ConfigurableProduct/_files/configurable_products.php
      * @magentoDataFixture loadConfigurableProduct
      */
+    public function testItReturnsCorrectConfigurableDiscounts()
+    {
+        $product = $this->productRepository->get('configurable');
+
+        $configurableDiscounts = $this->productHelper->getConfigurableDiscounts($product);
+
+        $this->assertEquals([10 => 90, 20 => 68], $configurableDiscounts);
+    }
+
+    /**
+     * @magentoDbIsolation enabled
+     * @magentoAppIsolation enabled
+     * @magentoDataFixture Magento/ConfigurableProduct/_files/configurable_products.php
+     * @magentoDataFixture loadConfigurableProduct
+     */
     public function testItReturnsCorrectSalePercentageForConfigurableProduct()
     {
         $product = $this->productRepository->get('configurable');
 
         $salePercentage = $this->productHelper->getSalePercentage($product);
 
-        $this->assertEquals(68, $salePercentage);
+        $this->assertEquals(90, $salePercentage);
     }
 
     public static function loadBundleProduct()
@@ -165,6 +175,11 @@ class ProductTest extends \PHPUnit\Framework\TestCase
         $salePercentage = $this->productHelper->getSalePercentage($product);
 
         $this->assertEquals(35, $salePercentage);
+    }
+
+    public static function loadProductWithTax()
+    {
+        require __DIR__ . '/../_files/product_with_tax.php';
     }
 
     /**
@@ -311,7 +326,8 @@ class ProductTest extends \PHPUnit\Framework\TestCase
                 [100, date('Y-m-d 00:00:00', strtotime('-7 days')), date('Y-m-d 00:00:00', strtotime('+7 days')), 200, 100, 50, 75],
             ];
         }
-
     }
+
+
 
 }
