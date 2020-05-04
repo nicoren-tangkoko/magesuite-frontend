@@ -79,10 +79,6 @@
         <plugin name="category_view_switcher" type="MageSuite\Frontend\Plugin\CategoryViewSwitcher" />
     </type>
 
-    <type name="Magento\Wishlist\Controller\AbstractIndex">
-        <plugin name="add_information_message_before_login" type="MageSuite\Frontend\Plugin\Wishlist\AddInformationMessageBeforeLogin" sortOrder="5"/>
-    </type>
-
     <type name="Magento\ProductAlert\Controller\Add">
         <plugin name="add_information_message_before_login" type="MageSuite\Frontend\Plugin\ProductAlert\AddInformationMessageBeforeLogin" sortOrder="5"/>
     </type>
