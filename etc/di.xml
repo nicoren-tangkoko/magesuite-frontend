@@ -75,6 +75,10 @@
         <plugin name="category_view_change" type="MageSuite\Frontend\Plugin\CategoryView" />
     </type>
 
+    <type name="Magento\Catalog\Block\Product\View\GalleryOptions">
+        <plugin name="add_maxheight_to_fotorama_options_json" type="MageSuite\Frontend\Plugin\Catalog\Block\Product\View\GalleryOptions\AddMaxheightToFotoramaOptionsJson" />
+    </type>
+
     <type name="Magento\Catalog\Helper\Product\ProductList">
         <plugin name="category_view_switcher" type="MageSuite\Frontend\Plugin\CategoryViewSwitcher" />
     </type>
