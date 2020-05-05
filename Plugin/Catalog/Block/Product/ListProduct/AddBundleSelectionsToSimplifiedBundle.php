@@ -15,7 +15,7 @@ class AddBundleSelectionsToSimplifiedBundle
             $bundleOptions = [];
 
             foreach ($selectionCollection as $selection) {
-                $bundleOptions[$selection->getOptionId()][] = $selection->getSelectionId();
+                $bundleOptions[$selection->getOptionId()][$selection->getId()] = $selection->getSelectionId();
             }
 
             $result['data']['bundle_option'] = $bundleOptions;
