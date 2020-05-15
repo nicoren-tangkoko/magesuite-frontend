@@ -154,15 +154,22 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function getConfigurableDiscounts($product)
     {
-        $simpleProducts = $product->getTypeInstance()->getUsedProducts($product);
         $configurableDiscounts = [];
-
-        foreach ($simpleProducts as $simpleProduct) {
-            $configurableDiscounts[$simpleProduct->getId()] = $this->calculateDiscountPercent($simpleProduct->getPrice(), $simpleProduct->getFinalPrice());
-        }
-
-        if(empty($configurableDiscounts)){
-            $configurableDiscounts[$product->getId()] = $this->calculateDiscountPercent($product->getPrice(), $product->getFinalPrice());
+        
+        if (! $product instanceof \Magento\Catalog\Api\Data\ProductInterface) {
+            return [];
+        } 
+        
+        if($product->getTypeId() == \Magento\ConfigurableProduct\Model\Product\Type\Configurable::TYPE_CODE) {
+            $simpleProducts = $product->getTypeInstance()->getUsedProducts($product);
+    
+            foreach ($simpleProducts as $simpleProduct) {
+                $configurableDiscounts[$simpleProduct->getId()] = $this->calculateDiscountPercent($simpleProduct->getPrice(), $simpleProduct->getFinalPrice());
+            }
+    
+            if(empty($configurableDiscounts)){
+                $configurableDiscounts[$product->getId()] = $this->calculateDiscountPercent($product->getPrice(), $product->getFinalPrice());
+            }
         }
 
         return $configurableDiscounts;
