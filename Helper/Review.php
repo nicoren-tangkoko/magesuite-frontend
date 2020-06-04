@@ -111,7 +111,7 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
                 $starsAmount = $this->getStarsAmount($votes);
 
                 if($type == 'review'){
-                    $reviewData['data']['votes'][(int)$starsAmount]++;
+                    $reviewData['data']['votes'][$this->roundReviewStarsAmount($starsAmount)]++;
                 }elseif($type == 'rating'){
                     $reviewData['data']['ratings'][$typeId]['starsAmount'] = $starsAmount;
                     $reviewData['data']['ratings'][$typeId]['label'] = isset($ratings[$typeId]) ? $ratings[$typeId]->getRatingCode() : null;
@@ -129,6 +129,11 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         return round($value / 10) / 2;
+    }
+
+    protected function roundReviewStarsAmount($startsAmount)
+    {
+        return round($startsAmount);
     }
 
     /**
