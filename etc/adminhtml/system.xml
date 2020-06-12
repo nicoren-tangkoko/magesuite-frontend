@@ -6,15 +6,18 @@
                 <field id="sort_direction" translate="label comment" type="select" sortOrder="6" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Product Listing Sort Direction</label>
                     <source_model>MageSuite\Frontend\Model\Config\Source\SortingDestination</source_model>
+                    <frontend_class>cs-csfeature__logo</frontend_class>
                 </field>
                 <field id="minimal_sale_percentage" translate="label" type="text" sortOrder="350" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Minimal Sale Percentage</label>
                     <comment>The discount badge will be visible only if discount is bigger than this value.</comment>
+                    <frontend_class>cs-csfeature__logo</frontend_class>
                 </field>
                 <field id="display_discount_badges_per_product" translate="label" type="text" sortOrder="400" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Display discount badges per product.</label>
                     <comment>Show discount badges for choosen product in configurable type.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_class>cs-csfeature__logo</frontend_class>
                 </field>
             </group>
         </section>
@@ -31,9 +34,9 @@
                 <field id="show_print_button" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
                     <label>Show order print button in customer area</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <frontend_class>cs-csfeature__logo</frontend_class>
                 </field>
             </group>
         </section>
-
     </system>
 </config>
