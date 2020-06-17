@@ -31,20 +31,26 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $ratings = null;
 
+    /**
+     * @var \Magento\Review\Model\ResourceModel\Review\CollectionFactory
+     */
+    protected $reviewCollectionFactory;
+
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Review\Model\Review $review,
         \Magento\Review\Model\ResourceModel\Rating\Option\Vote\Collection $voteCollection,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Review\Model\ResourceModel\Rating\CollectionFactory $ratingCollectionFactory
-    )
-    {
+        \Magento\Review\Model\ResourceModel\Rating\CollectionFactory $ratingCollectionFactory,
+        \Magento\Review\Model\ResourceModel\Review\CollectionFactory $reviewCollectionFactory
+    ) {
         parent::__construct($context);
 
         $this->review = $review;
         $this->voteCollection = $voteCollection;
         $this->storeManager = $storeManager;
         $this->ratingCollectionFactory = $ratingCollectionFactory;
+        $this->reviewCollectionFactory = $reviewCollectionFactory;
     }
 
     public function getReviewSummary($product, $includeVotes = false)
@@ -98,21 +104,22 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
             'rating' => []
         ];
 
-        foreach ($votes->getItems() AS $vote) {
+        foreach ($votes->getItems() as $vote) {
             $vote->getData();
             $groupedVotes['review'][$vote->getReviewId()][] = $vote->getPercent();
             $groupedVotes['rating'][$vote->getRatingId()][] = $vote->getPercent();
         }
 
         $ratings = $this->getRatings();
+        $approvedReviews = $this->getApprovedReviewIdArray($productId);
 
-        foreach($groupedVotes as $type => $group){
-            foreach ($group as $typeId => $votes){
+        foreach ($groupedVotes as $type => $group) {
+            foreach ($group as $typeId => $votes) {
                 $starsAmount = $this->getStarsAmount($votes);
 
-                if($type == 'review'){
+                if ($type == 'review' && in_array($typeId, $approvedReviews)) {
                     $reviewData['data']['votes'][$this->roundReviewStarsAmount($starsAmount)]++;
-                }elseif($type == 'rating'){
+                } elseif ($type == 'rating') {
                     $reviewData['data']['ratings'][$typeId]['starsAmount'] = $starsAmount;
                     $reviewData['data']['ratings'][$typeId]['label'] = isset($ratings[$typeId]) ? $ratings[$typeId]->getRatingCode() : null;
                 }
@@ -122,9 +129,25 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
         return $reviewData;
     }
 
+    protected function getApprovedReviewIds($productId)
+    {
+        $result = [];
+
+        $collection = $this->reviewCollectionFactory->create()
+            ->addStoreFilter($this->storeManager->getStore()->getId())
+            ->addStatusFilter(\Magento\Review\Model\Review::STATUS_APPROVED)
+            ->addEntityFilter('product', $productId)
+            ->setDateOrder();
+
+        foreach ($collection as $item) {
+            $result[] = (int)$item->getId();
+        }
+        return $result;
+    }
+
     protected function getStarsAmount($value)
     {
-        if(is_array($value)){
+        if (is_array($value)) {
             $value = array_sum($value) / count($value);
         }
 
@@ -139,8 +162,9 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * @return \Magento\Review\Model\Rating[]|null
      */
-    public function getRatings() {
-        if($this->ratings == null) {
+    public function getRatings()
+    {
+        if ($this->ratings == null) {
             $storeId = $this->storeManager->getStore()->getId();
 
             $ratings = $this->ratingCollectionFactory->create()
@@ -151,7 +175,7 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
                 ->load();
 
             /** @var \Magento\Review\Model\Rating $rating */
-            foreach($ratings as $rating) {
+            foreach ($ratings as $rating) {
                 $this->ratings[$rating->getId()] = $rating;
             }
         }
