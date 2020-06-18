@@ -111,7 +111,7 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
         }
 
         $ratings = $this->getRatings();
-        $approvedReviews = $this->getApprovedReviewIdArray($productId);
+        $approvedReviews = $this->getApprovedReviewIds($productId);
 
         foreach ($groupedVotes as $type => $group) {
             foreach ($group as $typeId => $votes) {
