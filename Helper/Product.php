@@ -18,14 +18,21 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $magentoProductMetadata;
 
+    /**
+     * @var \MageSuite\Discount\Helper\Discount
+     */
+    protected $discountHelper;
+
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \MageSuite\Frontend\Helper\Review $reviewHelper,
-        \Magento\Framework\App\ProductMetadataInterface $magentoProductMetadata
+        \Magento\Framework\App\ProductMetadataInterface $magentoProductMetadata,
+        \MageSuite\Discount\Helper\Discount $discountHelper
     ) {
         parent::__construct($context);
         $this->reviewHelper = $reviewHelper;
         $this->magentoProductMetadata = $magentoProductMetadata;
+        $this->discountHelper = $discountHelper;
     }
 
     public function getReviewSummary($product, $includeVotes = false)
@@ -80,5 +87,52 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
     public function isMagentoEnterprise()
     {
         return $this->magentoProductMetadata->getEdition() == self::MAGENTO_ENTERPRISE;
+    }
+
+    /**
+     * @deprecated
+     */
+    public function isOnSale($product, $finalPrice = null)
+    {
+        return $this->discountHelper->isOnSale($product, $finalPrice);
+    }
+
+    /**
+     * @deprecated
+     */
+    public function checkIsProductOnSale($product, $finalPrice = null)
+    {
+
+        if (empty($finalPrice)) {
+            $finalPrice = $product->getPriceInfo()->getPrice(\Magento\Catalog\Pricing\Price\FinalPrice::PRICE_CODE)->getAmount()->getValue();
+        }
+
+        $productPrice = $product->getPriceInfo()->getPrice(\Magento\Catalog\Pricing\Price\RegularPrice::PRICE_CODE)->getAmount()->getValue();
+
+        if (empty($productPrice)) {
+            return false;
+        }
+
+        if ($productPrice > $finalPrice) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getSalePercentage($product, $finalPrice = null)
+    {
+        return $this->discountHelper->getSalePercentage($product, $finalPrice);
+    }
+
+    /**
+     * @deprecated
+     */
+    public function getConfigurableDiscounts($product)
+    {
+        return $this->discountHelper->getConfigurableDiscounts($product);
     }
 }
