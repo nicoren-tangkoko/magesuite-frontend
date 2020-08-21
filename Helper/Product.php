@@ -203,7 +203,7 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         return $this->magentoProductMetadata->getEdition() == self::MAGENTO_ENTERPRISE;
     }
 
-    private function calculateDiscountPercent($regularPrice, $finalPrice){
+    protected function calculateDiscountPercent($regularPrice, $finalPrice){
         return round((($regularPrice - $finalPrice) / $regularPrice) * 100, 0);
     }
 }
