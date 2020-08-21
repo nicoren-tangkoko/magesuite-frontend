@@ -23,7 +23,7 @@ class StockDataTest extends \PHPUnit\Framework\TestCase
      */
     private $dataProvider;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
         $this->stockDataHelper = $this->objectManager->get(\MageSuite\Frontend\Helper\Product\StockData::class);

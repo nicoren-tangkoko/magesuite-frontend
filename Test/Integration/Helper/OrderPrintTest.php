@@ -24,7 +24,7 @@ class OrderPrintTest extends \Magento\TestFramework\TestCase\AbstractController
      */
     protected $order;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -19,7 +19,7 @@ class GetPageUrlByGroupIdentifierTest extends \PHPUnit\Framework\TestCase
      */
     protected $pageLink;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
         $this->storeManager = $this->objectManager->get(\Magento\Store\Model\StoreManagerInterface::class);

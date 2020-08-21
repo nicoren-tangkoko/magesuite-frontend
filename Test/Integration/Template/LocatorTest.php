@@ -14,7 +14,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
      */
     private $locator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
         $this->locator = $this->objectManager->get(\MageSuite\Frontend\Template\Locator::class);

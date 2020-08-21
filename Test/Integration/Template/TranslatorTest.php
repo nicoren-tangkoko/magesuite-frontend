@@ -23,7 +23,7 @@ class TranslatorTest extends \PHPUnit\Framework\TestCase
      */
     private $translate;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
         $this->translator = $this->objectManager->get(\MageSuite\Frontend\Template\Translator::class);

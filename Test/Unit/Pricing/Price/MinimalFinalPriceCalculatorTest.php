@@ -42,7 +42,7 @@ class MinimalFinalPriceCalculatorTest extends \PHPUnit\Framework\TestCase
      */
     private $calculator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->finalPrice = $this->getMockBuilder(FinalPrice::class)->disableOriginalConstructor()->getMock();
         $this->priceInfo = $this->getMockForAbstractClass(PriceInfoInterface::class);

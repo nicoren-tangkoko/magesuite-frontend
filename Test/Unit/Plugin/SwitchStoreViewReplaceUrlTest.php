@@ -40,7 +40,7 @@ class SwitchStoreViewReplaceUrlTest extends \PHPUnit\Framework\TestCase
      */
     protected $urlHelperDouble;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
 

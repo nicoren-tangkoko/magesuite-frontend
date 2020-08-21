@@ -8,7 +8,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
 
     protected $designStub;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->designStub = $this
             ->getMockBuilder(\Magento\Framework\View\DesignInterface::class)
@@ -25,38 +25,51 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
     {
         $this->setCurrentTheme($this->getMainTheme());
 
-        $this->assertContains('assets/theme-main/customizations/test.twig', $this->getLocator()->locate('test.twig'));
+        if(method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString('assets/theme-main/customizations/test.twig', $this->getLocator()->locate('test.twig'));
+        }
+        else {
+            $this->assertContains('assets/theme-main/customizations/test.twig', $this->getLocator()->locate('test.twig'));
+        }
     }
 
     public function testItReturnsCorrectTemplatePathWhenCustomizationIsNotAvailable()
     {
         $this->setCurrentTheme($this->getMainTheme());
 
-        $this->assertContains('assets/theme-main/components/without_customization.twig', $this->getLocator()->locate('without_customization.twig'));
+        if(method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString('assets/theme-main/components/without_customization.twig', $this->getLocator()->locate('without_customization.twig'));
+        }
+        else {
+            $this->assertContains('assets/theme-main/components/without_customization.twig', $this->getLocator()->locate('without_customization.twig'));
+        }
     }
 
     public function testItReturnsCorrectTemplatePathWhenTemplatedIsForcedToBeLoadedFromComponents()
     {
         $this->setCurrentTheme($this->getMainTheme());
 
-        $this->assertContains('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
+        if(method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
+        }
+        else {
+            $this->assertContains('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
+        }
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testItThrowsExceptionWhenTemplateWasNotFound()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->setCurrentTheme($this->getMainTheme());
 
         $this->getLocator()->locate('not_existing_template.twig');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testItThrowsExceptionWhenTemplateIsForcedToBeLoadedFromComponentsButWasNotFound()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->setCurrentTheme($this->getMainTheme());
 
         $this->getLocator()->locate('components/not_existing_template.twig');
@@ -65,19 +78,34 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
     public function testItReturnsTemplateFromCustomThemeComponents() {
         $this->setCurrentTheme($this->getCustomTheme());
 
-        $this->assertContains('assets/theme-custom/components/custom.twig', $this->getLocator()->locate('custom.twig'));
+        if(method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString('assets/theme-custom/components/custom.twig', $this->getLocator()->locate('custom.twig'));
+        }
+        else {
+            $this->assertContains('assets/theme-custom/components/custom.twig', $this->getLocator()->locate('custom.twig'));
+        }
     }
 
     public function testItReturnsTemplateFromCustomThemeCustomizations() {
         $this->setCurrentTheme($this->getCustomTheme());
 
-        $this->assertContains('assets/theme-custom/customizations/customization.twig', $this->getLocator()->locate('customization.twig'));
+        if(method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString('assets/theme-custom/customizations/customization.twig', $this->getLocator()->locate('customization.twig'));
+        }
+        else {
+            $this->assertContains('assets/theme-custom/customizations/customization.twig', $this->getLocator()->locate('customization.twig'));
+        }
     }
 
     public function testItReturnsTemplateFromFallback() {
         $this->setCurrentTheme($this->getCustomTheme());
 
-        $this->assertContains('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
+        if(method_exists($this, 'assertStringContainsString')) {
+            $this->assertStringContainsString('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
+        }
+        else {
+            $this->assertContains('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
+        }
     }
 
     protected function getMainTheme() {
