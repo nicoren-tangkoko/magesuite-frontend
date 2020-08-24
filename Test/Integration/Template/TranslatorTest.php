@@ -60,7 +60,10 @@ class TranslatorTest extends \PHPUnit\Framework\TestCase
     public function testItReturnsTranslatedText($givenText, $expectedText)
     {
         $this->translate->loadData(\Magento\Framework\App\Area::AREA_FRONTEND);
-        $this->assertContains($expectedText, (string)$this->translator->translate($givenText));
+
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains($expectedText, (string)$this->translator->translate($givenText));
     }
 
     public static function getTexts()
