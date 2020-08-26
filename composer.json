@@ -6,7 +6,7 @@
   "license": "OSL-3.0",
   "require": {
     "creativestyle/magesuite-image-optimization": "^1.0.0",
-    "creativestyle/magesuite-discount": "^1.0.0"
+    "creativestyle/magesuite-discount": "dev-feature-discount"
   },
   "autoload": {
     "files": [ "registration.php" ],
