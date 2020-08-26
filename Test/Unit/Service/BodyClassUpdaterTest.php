@@ -36,11 +36,8 @@ class BodyClassUpdaterTest extends \PHPUnit\Framework\TestCase
 
         $updatedHtml = $this->bodyClassUpdater->addFilterClassToBody($html, ['size' => 'S']);
 
-        if(method_exists($this, 'assertStringContainsString')) {
-            $this->assertStringContainsString('<body data-container="body" class="page-with-filter page-with-active-filter page-products catalog-category-view page-layout-2columns-left">', $updatedHtml);
-        }
-        else {
-            $this->assertContains('<body data-container="body" class="page-with-filter page-with-active-filter page-products catalog-category-view page-layout-2columns-left">', $updatedHtml);
-        }
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains('<body data-container="body" class="page-with-filter page-with-active-filter page-products catalog-category-view page-layout-2columns-left">', $updatedHtml);
     }
 }

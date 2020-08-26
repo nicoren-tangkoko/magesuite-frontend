@@ -25,36 +25,27 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
     {
         $this->setCurrentTheme($this->getMainTheme());
 
-        if(method_exists($this, 'assertStringContainsString')) {
-            $this->assertStringContainsString('assets/theme-main/customizations/test.twig', $this->getLocator()->locate('test.twig'));
-        }
-        else {
-            $this->assertContains('assets/theme-main/customizations/test.twig', $this->getLocator()->locate('test.twig'));
-        }
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains('assets/theme-main/customizations/test.twig', $this->getLocator()->locate('test.twig'));
     }
 
     public function testItReturnsCorrectTemplatePathWhenCustomizationIsNotAvailable()
     {
         $this->setCurrentTheme($this->getMainTheme());
 
-        if(method_exists($this, 'assertStringContainsString')) {
-            $this->assertStringContainsString('assets/theme-main/components/without_customization.twig', $this->getLocator()->locate('without_customization.twig'));
-        }
-        else {
-            $this->assertContains('assets/theme-main/components/without_customization.twig', $this->getLocator()->locate('without_customization.twig'));
-        }
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains('assets/theme-main/components/without_customization.twig', $this->getLocator()->locate('without_customization.twig'));
     }
 
     public function testItReturnsCorrectTemplatePathWhenTemplatedIsForcedToBeLoadedFromComponents()
     {
         $this->setCurrentTheme($this->getMainTheme());
 
-        if(method_exists($this, 'assertStringContainsString')) {
-            $this->assertStringContainsString('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
-        }
-        else {
-            $this->assertContains('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
-        }
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
     }
 
     public function testItThrowsExceptionWhenTemplateWasNotFound()
@@ -78,34 +69,25 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
     public function testItReturnsTemplateFromCustomThemeComponents() {
         $this->setCurrentTheme($this->getCustomTheme());
 
-        if(method_exists($this, 'assertStringContainsString')) {
-            $this->assertStringContainsString('assets/theme-custom/components/custom.twig', $this->getLocator()->locate('custom.twig'));
-        }
-        else {
-            $this->assertContains('assets/theme-custom/components/custom.twig', $this->getLocator()->locate('custom.twig'));
-        }
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains('assets/theme-custom/components/custom.twig', $this->getLocator()->locate('custom.twig'));
     }
 
     public function testItReturnsTemplateFromCustomThemeCustomizations() {
         $this->setCurrentTheme($this->getCustomTheme());
 
-        if(method_exists($this, 'assertStringContainsString')) {
-            $this->assertStringContainsString('assets/theme-custom/customizations/customization.twig', $this->getLocator()->locate('customization.twig'));
-        }
-        else {
-            $this->assertContains('assets/theme-custom/customizations/customization.twig', $this->getLocator()->locate('customization.twig'));
-        }
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains('assets/theme-custom/customizations/customization.twig', $this->getLocator()->locate('customization.twig'));
     }
 
     public function testItReturnsTemplateFromFallback() {
         $this->setCurrentTheme($this->getCustomTheme());
 
-        if(method_exists($this, 'assertStringContainsString')) {
-            $this->assertStringContainsString('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
-        }
-        else {
-            $this->assertContains('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
-        }
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains('assets/theme-main/components/test.twig', $this->getLocator()->locate('components/test.twig'));
     }
 
     protected function getMainTheme() {
