@@ -15,7 +15,7 @@ class SetCategoryCustomUrlTest extends \PHPUnit\Framework\TestCase
      */
     private $categoryRepository;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->categoryRepository = \Magento\TestFramework\ObjectManager::getInstance()
             ->create(\Magento\Catalog\Api\CategoryRepositoryInterface::class);

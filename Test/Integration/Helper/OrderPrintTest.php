@@ -24,7 +24,7 @@ class OrderPrintTest extends \Magento\TestFramework\TestCase\AbstractController
      */
     protected $order;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -45,7 +45,9 @@ class OrderPrintTest extends \Magento\TestFramework\TestCase\AbstractController
         $this->dispatch(self::ORDER_PRINT_URL . $this->getOrderId());
         $html = $this->getResponse()->getBody();
 
-        $this->assertNotContains('Print Order', $html);
+        $assertNotContains = method_exists($this, 'assertStringNotContainsString') ? 'assertStringNotContainsString' : 'assertNotContains';
+
+        $this->$assertNotContains('Print Order', $html);
     }
 
     /**
@@ -60,7 +62,9 @@ class OrderPrintTest extends \Magento\TestFramework\TestCase\AbstractController
         $this->dispatch(self::ORDER_PRINT_URL . $this->getOrderId());
         $html = $this->getResponse()->getBody();
 
-        $this->assertContains('Print Order', $html);
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains('Print Order', $html);
     }
 
     protected function getOrderId()
