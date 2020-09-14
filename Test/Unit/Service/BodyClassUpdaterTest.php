@@ -15,7 +15,7 @@ class BodyClassUpdaterTest extends \PHPUnit\Framework\TestCase
      */
     protected $bodyClassUpdater;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
         $this->bodyClassUpdater = $this->objectManager->get(\MageSuite\Frontend\Service\BodyClassUpdater::class);
@@ -36,6 +36,8 @@ class BodyClassUpdaterTest extends \PHPUnit\Framework\TestCase
 
         $updatedHtml = $this->bodyClassUpdater->addFilterClassToBody($html, ['size' => 'S']);
 
-        $this->assertContains('<body data-container="body" class="page-with-filter page-with-active-filter page-products catalog-category-view page-layout-2columns-left">', $updatedHtml);
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains('<body data-container="body" class="page-with-filter page-with-active-filter page-products catalog-category-view page-layout-2columns-left">', $updatedHtml);
     }
 }

@@ -23,7 +23,7 @@ class TranslatorTest extends \PHPUnit\Framework\TestCase
      */
     private $translate;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
         $this->translator = $this->objectManager->get(\MageSuite\Frontend\Template\Translator::class);
@@ -60,7 +60,10 @@ class TranslatorTest extends \PHPUnit\Framework\TestCase
     public function testItReturnsTranslatedText($givenText, $expectedText)
     {
         $this->translate->loadData(\Magento\Framework\App\Area::AREA_FRONTEND);
-        $this->assertContains($expectedText, (string)$this->translator->translate($givenText));
+
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains($expectedText, (string)$this->translator->translate($givenText));
     }
 
     public static function getTexts()

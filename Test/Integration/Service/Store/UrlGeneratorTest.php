@@ -16,7 +16,7 @@ class UrlGeneratorTest extends \PHPUnit\Framework\TestCase
      */
     private $store;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->urlGenerator = Bootstrap::getObjectManager()->create('MageSuite\Frontend\Service\Store\UrlGenerator');
         $this->store = Bootstrap::getObjectManager()->create('Magento\Store\Model\Store');

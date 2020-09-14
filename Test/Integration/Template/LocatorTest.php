@@ -14,7 +14,7 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
      */
     private $locator;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
         $this->locator = $this->objectManager->get(\MageSuite\Frontend\Template\Locator::class);
@@ -26,7 +26,9 @@ class LocatorTest extends \PHPUnit\Framework\TestCase
      */
     public function testItReturnsCorrectTemplatePath($locatorPath, $expectedPath)
     {
-        $this->assertContains($expectedPath, $this->locator->locate($locatorPath));
+        $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
+
+        $this->$assertContains($expectedPath, $this->locator->locate($locatorPath));
     }
 
     public static function getPaths()
