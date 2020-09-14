@@ -2,12 +2,6 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
-        <catalog>
-            <frontend>
-                <minimal_sale_percentage>5</minimal_sale_percentage>
-                <display_discount_badges_per_product>0</display_discount_badges_per_product>
-            </frontend>
-        </catalog>
         <dev>
             <js>
                 <minify_exclude>
