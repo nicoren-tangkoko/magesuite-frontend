@@ -102,7 +102,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
             $categoryTreeId = ($returnCurrent or $category->getLevel() == self::CATEGORY_TOP_LEVEL) ? $category->getId() : $category->getParentId();
             $categoryNode = $this->categoryTree->getCategoryTree($configuration, $categoryTreeId);
 
-            $this->cache->save(serialize($categoryNode), $cacheTag, ['layered_navigation_tree'], self::CACHE_LIFETIME);
+            $this->cache->save(serialize($categoryNode), $cacheTag, [\Magento\Catalog\Model\Category::CACHE_TAG, 'layered_navigation_tree'], self::CACHE_LIFETIME);
         }
 
         $categoryNode['current'] = true;
