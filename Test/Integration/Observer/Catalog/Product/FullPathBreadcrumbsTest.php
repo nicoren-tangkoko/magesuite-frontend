@@ -51,10 +51,24 @@ class FullPathBreadcrumbsTest extends \PHPUnit\Framework\TestCase
         }
 
         $product = $this->productRepository->get($sku);
-
         $this->assertNull($this->registry->registry('current_category'));
 
-        $this->eventManager->dispatch('catalog_controller_product_init_after', ['product' => $product]);
+        $request = $this->createMock(\Magento\Framework\App\Request\Http::class);
+        $request->expects($this->any())
+            ->method('getFullActionName')
+            ->willReturn('catalog_product_view');
+
+        $controller = $this->createMock(\Magento\Framework\App\Action\Action::class);
+        $controller->expects($this->any())
+            ->method('getRequest')
+            ->willReturn($request);
+
+        $this->eventManager->dispatch(
+            'catalog_controller_product_init_after', [
+                'product' => $product,
+                'controller_action' => $controller
+            ]
+        );
 
         $currentCategory = $this->registry->registry('current_category');
 
