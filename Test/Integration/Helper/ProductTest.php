@@ -42,6 +42,7 @@ class ProductTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @magentoAppArea frontend
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoDataFixture loadProductWithReviewsFixture

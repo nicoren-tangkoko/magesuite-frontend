@@ -93,6 +93,7 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @magentoAppArea frontend
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoDataFixture loadCategoriesFixture
