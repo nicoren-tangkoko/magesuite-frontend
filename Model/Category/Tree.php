@@ -125,7 +125,7 @@ class Tree
             $categoryCollection = $this->getCategoriesFromCollection($configuration);
             $categoryTree = $this->buildTree($categoryCollection, $currentCategories);
 
-            $this->cache->save(serialize($categoryTree), $cacheTag, ['categories_tree'], self::CACHE_LIFETIME);
+            $this->cache->save(serialize($categoryTree), $cacheTag, [\Magento\Catalog\Model\Category::CACHE_TAG, 'categories_tree'], self::CACHE_LIFETIME);
         }
 
         if ($categoryId) {
