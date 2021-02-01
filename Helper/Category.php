@@ -55,6 +55,11 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $eavConfig;
 
+    /**
+     * @var \MageSuite\CategoryIcon\Helper\CategoryIcon
+     */
+    protected $categoryIconHelper;
+
     protected $rootCategoryId;
 
     public function __construct(
@@ -66,7 +71,8 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Catalog\Model\ResourceModel\Category $categoryResource,
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
-        \Magento\Eav\Model\Config $eavConfig
+        \Magento\Eav\Model\Config $eavConfig,
+        \MageSuite\CategoryIcon\Helper\CategoryIcon $categoryIconHelper
     ) {
         $this->registry = $registry;
         $this->categoryTree = $categoryTree;
@@ -77,6 +83,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         $this->categoryResource = $categoryResource;
         $this->categoryRepository = $categoryRepository;
         $this->eavConfig = $eavConfig;
+        $this->categoryIconHelper = $categoryIconHelper;
     }
 
     public function getCategoryNode($category = null, $returnCurrent = false)
@@ -191,7 +198,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
             $categoryId = (int)$filterItem->getValueString();
             $category = $this->categoryRepository->get($categoryId);
 
-            return $this->getCategoryIcon($category);
+            return $this->categoryIconHelper->getUrl($category);
         } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
             return null;
         }
