@@ -60,6 +60,11 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $categoryIconHelper;
 
+    /**
+     * @var \Magento\Catalog\Model\CategoryFactory
+     */
+    protected $categoryFactory;
+
     protected $rootCategoryId;
 
     public function __construct(
@@ -72,7 +77,8 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Catalog\Model\ResourceModel\Category $categoryResource,
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
         \Magento\Eav\Model\Config $eavConfig,
-        \MageSuite\CategoryIcon\Helper\CategoryIcon $categoryIconHelper
+        \MageSuite\CategoryIcon\Helper\CategoryIcon $categoryIconHelper,
+        \Magento\Catalog\Model\CategoryFactory $categoryFactory = null
     ) {
         $this->registry = $registry;
         $this->categoryTree = $categoryTree;
@@ -84,6 +90,8 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         $this->categoryRepository = $categoryRepository;
         $this->eavConfig = $eavConfig;
         $this->categoryIconHelper = $categoryIconHelper;
+        $this->categoryFactory = $categoryFactory
+            ?? \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Catalog\Model\CategoryFactory::class);
     }
 
     public function getCategoryNode($category = null, $returnCurrent = false)
@@ -194,14 +202,22 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
             return null;
         }
 
-        try {
-            $categoryId = (int)$filterItem->getValueString();
-            $category = $this->categoryRepository->get($categoryId);
+        $categoryId = (int)$filterItem->getValueString();
+        $categoryIcon = $this->categoryResource
+            ->getAttributeRawValue(
+                $categoryId,
+                'category_icon',
+                $this->storeManager->getStore()->getId()
+            );
 
-            return $this->categoryIconHelper->getUrl($category);
-        } catch (\Magento\Framework\Exception\NoSuchEntityException $e) {
+        if (!$categoryIcon) {
             return null;
         }
+
+        $category = $this->categoryFactory->create();
+        $category->setCategoryIcon($categoryIcon);
+
+        return $this->categoryIconHelper->getUrl($category);
     }
 
     public function getCategoryView()
