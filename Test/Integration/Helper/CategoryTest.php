@@ -11,36 +11,35 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @var \Magento\TestFramework\ObjectManager
      */
-    private $objectManager;
+    protected $objectManager;
 
     /**
      * @var \Magento\Catalog\Api\CategoryRepositoryInterface
      */
-    private $categoryRepository;
+    protected $categoryRepository;
 
     /**
      * @var \MageSuite\Frontend\Helper\Category
      */
-    private $categoryHelper;
+    protected $categoryHelper;
 
     public function setUp(): void
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
 
-        $this->categoryHelper = $this->objectManager
-            ->get(\MageSuite\Frontend\Helper\Category::class);
+        $this->categoryHelper = $this->objectManager->get(\MageSuite\Frontend\Helper\Category::class);
 
         $this->categoryRepository = $this->objectManager->create(\Magento\Catalog\Api\CategoryRepositoryInterface::class);
     }
 
     public static function loadCategoriesFixture()
     {
-        require __DIR__.'/../_files/categories.php';
+        require __DIR__ . '/../_files/categories.php';
     }
 
     public static function loadCategoriesFixtureRollback()
     {
-        require __DIR__.'/../_files/categories_rollback.php';
+        require __DIR__ . '/../_files/categories_rollback.php';
     }
 
     /**
@@ -52,7 +51,6 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     public function testItReturnsCategoryNode()
     {
         $categoryId = 335;
-
         $categoryNode = $this->getCategoryNode($categoryId);
 
         $this->assertArrayHasKey('name', $categoryNode);
@@ -69,7 +67,6 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     public function getCategoryNode($categoryId, $returnCurrent = false)
     {
         $category = $this->categoryRepository->get($categoryId);
-
         $categoryTree = $this->categoryHelper->getCategoryNode($category, $returnCurrent);
 
         return $categoryTree;
@@ -84,7 +81,6 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     public function testItReturnsCurrentCategory()
     {
         $categoryId = 335;
-
         $categoryNode = $this->getCategoryNode($categoryId, true);
 
         $this->assertEquals('Second subcategory', $categoryNode['name']);
@@ -101,13 +97,14 @@ class CategoryTest extends \PHPUnit\Framework\TestCase
     public function testItReturnsImageTeaserAttributes()
     {
         $categoryId = 335;
-
         $category = $this->categoryRepository->get($categoryId);
 
+        $url = $this->categoryHelper->getImageTeaser($category);
+        $url = str_replace('pub/', '', $url);
         $this->assertEquals('teaser.png', $category->getImageTeaser());
         $this->assertEquals(
-            'http://localhost/pub/media/catalog/category/teaser.png',
-            $this->categoryHelper->getImageTeaser($category)
+            'http://localhost/media/catalog/category/teaser.png',
+            $url
         );
 
         $this->assertEquals('Image Teaser Slogan', $category->getImageTeaserSlogan());
