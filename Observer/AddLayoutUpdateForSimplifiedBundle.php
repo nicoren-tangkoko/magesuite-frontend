@@ -17,6 +17,9 @@ class AddLayoutUpdateForSimplifiedBundle implements \Magento\Framework\Event\Obs
     const LAYOUT_HANDLE_NAME = 'catalog_product_view_type_simplified_bundle';
     const CATALOG_PRODUCT_VIEW = 'catalog_product_view';
 
+    const LAYOUT_HANDLE_NAME_CONFIGURE = 'checkout_cart_configure_type_simplified_bundle';
+    const CHECKOUT_CART_CONFIGURE = 'checkout_cart_configure';
+
     public function __construct(
         \Magento\Framework\App\Request\Http $request,
         \Magento\Framework\Registry $registry
@@ -34,7 +37,7 @@ class AddLayoutUpdateForSimplifiedBundle implements \Magento\Framework\Event\Obs
     {
         $currentAction = $this->request->getFullActionName();
 
-        if($currentAction != self::CATALOG_PRODUCT_VIEW) {
+        if($currentAction != self::CATALOG_PRODUCT_VIEW && $currentAction != self::CHECKOUT_CART_CONFIGURE ) {
             return;
         }
 
@@ -59,6 +62,10 @@ class AddLayoutUpdateForSimplifiedBundle implements \Magento\Framework\Event\Obs
         /** @var \Magento\Framework\View\Layout $layout */
         $layout = $observer->getEvent()->getLayout();
 
-        $layout->getUpdate()->addHandle(self::LAYOUT_HANDLE_NAME);
+        if($currentAction == self::CATALOG_PRODUCT_VIEW) {
+            $layout->getUpdate()->addHandle(self::LAYOUT_HANDLE_NAME);
+        } else if($currentAction == self::CHECKOUT_CART_CONFIGURE) {
+            $layout->getUpdate()->addHandle(self::LAYOUT_HANDLE_NAME_CONFIGURE);
+        }
     }
 }
