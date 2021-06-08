@@ -12,9 +12,9 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
     protected $review;
 
     /**
-     * @var \Magento\Review\Model\ResourceModel\Rating\Option\Vote\Collection
+     * @var \Magento\Review\Model\ResourceModel\Rating\Option\Vote\CollectionFactory
      */
-    protected $voteCollection;
+    protected $voteCollectionFactory;
 
     /**
      * @var \Magento\Store\Model\StoreManagerInterface
@@ -39,7 +39,7 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Review\Model\Review $review,
-        \Magento\Review\Model\ResourceModel\Rating\Option\Vote\Collection $voteCollection,
+        \Magento\Review\Model\ResourceModel\Rating\Option\Vote\CollectionFactory $voteCollectionFactory,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Review\Model\ResourceModel\Rating\CollectionFactory $ratingCollectionFactory,
         \Magento\Review\Model\ResourceModel\Review\CollectionFactory $reviewCollectionFactory
@@ -47,7 +47,7 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
         parent::__construct($context);
 
         $this->review = $review;
-        $this->voteCollection = $voteCollection;
+        $this->voteCollectionFactory = $voteCollectionFactory;
         $this->storeManager = $storeManager;
         $this->ratingCollectionFactory = $ratingCollectionFactory;
         $this->reviewCollectionFactory = $reviewCollectionFactory;
@@ -95,7 +95,8 @@ class Review extends \Magento\Framework\App\Helper\AbstractHelper
 
     protected function prepareAdditionalRatingData($reviewData, $productId, $storeId)
     {
-        $votes = $this->voteCollection
+        $votes = $this->voteCollectionFactory
+            ->create()
             ->setEntityPkFilter($productId)
             ->setStoreFilter($storeId);
 
