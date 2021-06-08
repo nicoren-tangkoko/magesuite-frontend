@@ -6,9 +6,9 @@ namespace MageSuite\Frontend\Setup\Patch\Data;
 class SetFileProtectedExtensions implements \Magento\Framework\Setup\Patch\DataPatchInterface
 {
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var \Magento\MediaStorage\Model\File\Validator\NotProtectedExtension
      */
-    protected $scopeConfig;
+    protected $notProtectedExtension;
 
     /**
      * @var \Magento\Framework\App\Config\Storage\WriterInterface
@@ -16,10 +16,10 @@ class SetFileProtectedExtensions implements \Magento\Framework\Setup\Patch\DataP
     protected $configWriter;
 
     public function __construct(
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
+        \Magento\MediaStorage\Model\File\Validator\NotProtectedExtension $notProtectedExtension,
         \Magento\Framework\App\Config\Storage\WriterInterface $configWriter
     ) {
-        $this->scopeConfig = $scopeConfig;
+        $this->notProtectedExtension = $notProtectedExtension;
         $this->configWriter = $configWriter;
     }
 
@@ -35,10 +35,11 @@ class SetFileProtectedExtensions implements \Magento\Framework\Setup\Patch\DataP
 
     protected function getFileProtectedExtensions()
     {
-        $fileProtectedExtensions = explode(
-            ',',
-            $this->scopeConfig->getValue(\Magento\MediaStorage\Model\File\Validator\NotProtectedExtension::XML_PATH_PROTECTED_FILE_EXTENSIONS)
-        );
+        $fileProtectedExtensions = $this->notProtectedExtension->getProtectedFileExtensions();
+
+        if (is_string($fileProtectedExtensions)) {
+            $fileProtectedExtensions = explode(',', $fileProtectedExtensions);
+        }
 
         $svgPosition = array_search('svg', $fileProtectedExtensions);
 
