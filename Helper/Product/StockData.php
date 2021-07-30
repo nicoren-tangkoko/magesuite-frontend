@@ -27,6 +27,7 @@ class StockData extends \Magento\Framework\App\Helper\AbstractHelper
             return $return;
         }
 
+        /** @var \Magento\Catalog\Model\Product $product */
         foreach ($productCollection as $productId => $product) {
             $return[$productId] = [
                 'salable' => false,
@@ -37,7 +38,7 @@ class StockData extends \Magento\Framework\App\Helper\AbstractHelper
                 $productIds = array_merge($productIds, $product->getTypeInstance()->getUsedProductIds($product));
             } else {
                 $productIds[] = $productId;
-                $return[$productId]['salable'] = $product->getIsSalable();
+                $return[$productId]['salable'] = $product->isSalable();
             }
         }
 
