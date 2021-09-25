@@ -21,7 +21,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     protected $categoryTree;
 
     /**
-     * @var \MageSuite\ContentConstructor\Components\ProductCarousel\DataProvider
+     * @var \MageSuite\ContentConstructorFrontend\DataProviders\ProductCarouselDataProvider
      */
     protected $productDataProvider;
 
@@ -70,7 +70,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     public function __construct(
         \Magento\Framework\Registry $registry,
         \MageSuite\Frontend\Model\Category\Tree $categoryTree,
-        \MageSuite\ContentConstructor\Components\ProductCarousel\DataProvider $productDataProvider,
+        \MageSuite\ContentConstructorFrontend\DataProviders\ProductCarouselDataProvider $productDataProvider,
         \Magento\Framework\Json\DecoderInterface $jsonDecoder,
         \Magento\Framework\App\CacheInterface $cache,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
