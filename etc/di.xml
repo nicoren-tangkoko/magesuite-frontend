@@ -174,4 +174,10 @@
     <type name="Magento\Framework\App\ProductMetadataInterface">
         <plugin name="cache_magento_version" type="MageSuite\Frontend\Plugin\Framework\App\ProductMetadataInterface\CacheVersion" />
     </type>
+
+    <type name="Magento\Sitemap\Model\ItemProvider\Category">
+        <plugin name="replace_category_url_with_custom_category_url" type="MageSuite\Frontend\Plugin\Sitemap\Model\ItemProvider\Category\ReplaceCategoryUrlWithCustomCategoryUrl"/>
+    </type>
+
+    <preference for="Magento\Sitemap\Model\Sitemap" type="MageSuite\Frontend\Model\Sitemap\Sitemap" />
 </config>
