@@ -15,15 +15,24 @@ class ReplaceCategoryUrlWithCustomCategoryUrl
     protected $itemFactory;
 
     /**
+     * @var \Magento\Framework\EntityManager\MetadataPool
+     */
+    protected $metadataPool;
+
+    /**
      * @param \Magento\Framework\App\ResourceConnection $resource
+     * @param \Magento\Sitemap\Model\SitemapItemInterfaceFactory $itemFactory
+     * @param \Magento\Framework\EntityManager\MetadataPool $metadataPool
      */
     public function __construct(
         \Magento\Framework\App\ResourceConnection $resource,
-        \Magento\Sitemap\Model\SitemapItemInterfaceFactory $itemFactory
+        \Magento\Sitemap\Model\SitemapItemInterfaceFactory $itemFactory,
+        \Magento\Framework\EntityManager\MetadataPool $metadataPool
     )
     {
         $this->resource = $resource;
         $this->itemFactory = $itemFactory;
+        $this->metadataPool = $metadataPool;
     }
 
     /**
@@ -63,6 +72,7 @@ class ReplaceCategoryUrlWithCustomCategoryUrl
     public function getCategoriesCustomUrlAttributes(array $categoriesIds, int $storeId): array
     {
         $categoriesIdsString = sprintf('(%s)', implode(',', $categoriesIds));
+        $linkField = $this->metadataPool->getMetadata(\Magento\Catalog\Api\Data\CategoryInterface::class)->getLinkField();
         $connection = $this->resource->getConnection();
         $categoryCustomUrlAttributeSelect = $connection->select()->from(
             ['eav_attribute' => 'eav_attribute'],
@@ -71,10 +81,10 @@ class ReplaceCategoryUrlWithCustomCategoryUrl
             ['catalog_category_entity_varchar' => $this->resource->getTableName('catalog_category_entity_varchar')],
             'eav_attribute.attribute_id = catalog_category_entity_varchar.attribute_id'
             . $connection->quoteInto(' AND catalog_category_entity_varchar.store_id = ?', $storeId)
-            . sprintf(' AND catalog_category_entity_varchar.entity_id IN %s', $categoriesIdsString),
+            . sprintf(' AND catalog_category_entity_varchar.%s IN %s', $linkField, $categoriesIdsString),
             [
                 'category_custom_url' => 'value',
-                'category_id' => 'entity_id'
+                'category_id' => $linkField
             ]
         )->where(
             'eav_attribute.entity_type_id = ?',
