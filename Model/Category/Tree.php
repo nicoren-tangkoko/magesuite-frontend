@@ -7,7 +7,25 @@ class Tree
     const CACHE_LIFETIME = 86400;
     const CACHE_TAG = 'category_tree_%s_%s_%s';
 
-    private $rootCategoryId;
+    /**
+     * @var int
+     */
+    protected $rootCategoryId;
+
+    /**
+     * @var \Magento\Framework\App\CacheInterface
+     */
+    protected $cache;
+
+    /**
+     * @var \Magento\Framework\Serialize\Serializer\Json
+     */
+    protected $serializer;
+
+    /**
+     * @var \Magento\Store\Model\StoreManagerInterface $storeManager
+     */
+    protected $storeManager;
 
     /**
      * @var \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory
@@ -19,29 +37,21 @@ class Tree
      */
     protected $categoryHelper;
 
-    /**
-     * @var \Magento\Framework\App\CacheInterface
-     */
-    protected $cache;
-
-    /**
-     * @var \Magento\Store\Model\StoreManagerInterface $storeManager
-     */
-    protected $storeManager;
-
     public function __construct(
-        \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollectionFactory,
-        \MageSuite\ContentConstructorFrontend\Helper\Category $categoryHelper,
         \Magento\Framework\App\CacheInterface $cache,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
+        \Magento\Framework\Serialize\Serializer\Serialize $serializer,
+        \Magento\Store\Model\StoreManagerInterface $storeManager,
+        \Magento\Catalog\Model\ResourceModel\Category\CollectionFactory $categoryCollectionFactory,
+        \MageSuite\ContentConstructorFrontend\Helper\Category $categoryHelper
     ) {
-        $this->categoryCollectionFactory = $categoryCollectionFactory;
-        $this->categoryHelper =  $categoryHelper;
         $this->cache = $cache;
+        $this->serializer = $serializer;
         $this->storeManager = $storeManager;
+        $this->categoryCollectionFactory = $categoryCollectionFactory;
+        $this->categoryHelper = $categoryHelper;
     }
 
-    private function buildTree($collection, $currentCategories)
+    protected function buildTree($collection, $currentCategories)
     {
         $flat = [];
         $categories = [];
@@ -99,10 +109,10 @@ class Tree
         ];
     }
 
-    public function getCategoryTree($configuration = [], $categoryId = null, $currentCategories = [], $categoryTag = null)
+    public function getCategoryTree($configuration = [], $categoryId = null, $currentCategories = [])
     {
-        $this->rootCategoryId = isset($configuration['root_category_id']) ? $configuration['root_category_id'] : 0;
-        $onlyIncludedInMenu = isset($configuration['only_included_in_menu']) ? $configuration['only_included_in_menu'] : 0;
+        $this->rootCategoryId = $configuration['root_category_id'] ?? 0;
+        $onlyIncludedInMenu = $configuration['only_included_in_menu'] ?? 0;
 
         if (!$this->rootCategoryId) {
             $this->rootCategoryId = $this->storeManager->getStore()->getRootCategoryId();
@@ -119,17 +129,21 @@ class Tree
             $this->storeManager->getStore()->getId()
         );
 
-        $categoryTree = unserialize($this->cache->load($cacheTag));
+        try {
+            $categoryTree = $this->serializer->unserialize($this->cache->load($cacheTag));
+        } catch (\InvalidArgumentException $exception) {
+            $categoryTree = null;
+        }
 
-        if (!$categoryTree or ($categoryId and !isset($categoryTree['flat'][$categoryId]))) {
+        if (!$categoryTree || ($categoryId && !isset($categoryTree['flat'][$categoryId]))) {
             $categoryCollection = $this->getCategoriesFromCollection($configuration);
             $categoryTree = $this->buildTree($categoryCollection, $currentCategories);
 
-            $this->cache->save(serialize($categoryTree), $cacheTag, [\Magento\Catalog\Model\Category::CACHE_TAG, 'categories_tree'], self::CACHE_LIFETIME);
+            $this->cache->save($this->serializer->serialize($categoryTree), $cacheTag, [\Magento\Catalog\Model\Category::CACHE_TAG, 'categories_tree'], self::CACHE_LIFETIME);
         }
 
         if ($categoryId) {
-            $category = isset($categoryTree['flat'][$categoryId]) ? $categoryTree['flat'][$categoryId] : false;
+            $category = $categoryTree['flat'][$categoryId] ?? false;
 
             if (is_array($category)) {
                 $category = $this->markCurrentCategories($category, $currentCategories);
@@ -141,7 +155,14 @@ class Tree
         return $categoryTree['tree'];
     }
 
-    protected function getCategoriesFromCollection($configuration)
+    public function getCategoriesFromCollection($configuration)
+    {
+        $categoryCollection = $this->prepareCategoriesCollection($configuration);
+
+        return $categoryCollection->getItems();
+    }
+
+    public function prepareCategoriesCollection($configuration)
     {
         $categoryCollection = $this->categoryCollectionFactory->create();
 
@@ -154,7 +175,7 @@ class Tree
 
         $categoryCollection->addAttributeToSelect('*');
 
-        return $categoryCollection->getItems();
+        return $categoryCollection;
     }
 
     protected function preparePath($path)
@@ -162,7 +183,7 @@ class Tree
         $pathIds = explode('/', $path);
 
         $rootCategoryPosition = array_search($this->rootCategoryId, $pathIds);
-        $pathIds = array_slice($pathIds, $rootCategoryPosition+1, -1);
+        $pathIds = array_slice($pathIds, $rootCategoryPosition + 1, -1);
 
         return $pathIds;
     }
