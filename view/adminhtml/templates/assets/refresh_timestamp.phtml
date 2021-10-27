@@ -1,0 +1,16 @@
+<?php
+/** @var \Magento\Framework\View\Helper\SecureHtmlRenderer $secureRenderer */
+/** @var \Magento\Backend\Block\Template $block */
+?>
+<p>
+    <button id="refreshAssetsUrlTimestamp" type="button">
+        <?= $block->escapeHtml(__('Refresh assets URL timestamp')); ?>
+    </button>
+    <?= /* @noEscape */ $secureRenderer->renderEventListenerAsTag(
+        'onclick',
+        sprintf("setLocation('%s')", $block->escapeUrl($block->getUrl('frontend_extension/assets/refreshUrlTimestamp'))),
+        'button#refreshAssetsUrlTimestamp'
+    ) ?>
+    <span><?= $block->escapeHtml(__('Generate new timestamp that will be added to all JS/CSS URLs.
+    Use when you need to make sure all customers need to receive fresh JS/CSS files. Remember to clear caches afterwards.')); ?></span>
+</p>
