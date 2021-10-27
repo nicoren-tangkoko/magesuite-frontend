@@ -21,4 +21,17 @@
             <argument name="categoryHelper" xsi:type="object">MageSuite\Frontend\Helper\Category\Proxy</argument>
         </arguments>
     </type>
+
+    <type name="Magento\Framework\View\Asset\File">
+        <plugin
+            name="retry_asset_loading_on_error"
+            type="MageSuite\Frontend\Plugin\Framework\View\Asset\File\RetryAssetLoadingOnError"
+            sortOrder="10"
+        />
+        <plugin
+            name="append_timestamp_to_asset_url"
+            type="MageSuite\Frontend\Plugin\Framework\View\Asset\File\AppendTimestampToAssetUrl"
+            sortOrder="10"
+        />
+    </type>
 </config>
