@@ -176,7 +176,7 @@
     </type>
 
     <type name="Magento\Sitemap\Model\ItemProvider\Category">
-        <plugin name="replace_category_url_with_custom_category_url" type="MageSuite\Frontend\Plugin\Sitemap\Model\ItemProvider\Category\ReplaceCategoryUrlWithCustomCategoryUrl"/>
+        <plugin name="replace_category_url_with_custom_category_url" type="MageSuite\Frontend\Plugin\Sitemap\Model\ItemProvider\Category\ReplaceCategoryUrlWithCustomCategoryUrl" sortOrder="2" />
     </type>
 
     <preference for="Magento\Sitemap\Model\Sitemap" type="MageSuite\Frontend\Model\Sitemap\Sitemap" />
