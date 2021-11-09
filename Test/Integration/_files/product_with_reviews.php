@@ -44,7 +44,7 @@ $review = $objectManager->create(\Magento\Review\Model\Review::class)
     ->setDetail('Test details')
     ->setEntityId(1)
     ->setStoreId($storeId)
-    ->setStores(1)
+    ->setStores([1])
     ->setCustomerId(null)
     ->setNickname('Test')
     ->save();
