@@ -32,6 +32,13 @@ class RetryAssetLoadingOnError
                $attempt++;
            }
            catch(\Magento\Framework\View\Asset\File\NotFoundException $e) {
+               $this->logger->error(sprintf(
+                   'Unable to load source file "%s" for merging during %d attempt, error details: %s, %s',
+                   $subject->getPath(),
+                   $attempt,
+                   $e->getMessage(),
+                   $e->getTraceAsString()
+               ));
                throw $e;
            }
            catch(\Exception $e) {
