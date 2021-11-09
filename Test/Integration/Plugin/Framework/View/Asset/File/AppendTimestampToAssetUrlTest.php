@@ -60,7 +60,7 @@ class AppendTimestampToAssetUrlTest extends \PHPUnit\Framework\TestCase
             'css_file_with_timestamp' => [
                 1634822082,
                 'style.css',
-                'http://localhost/static/version1634822211/frontend/Magento/luma/en_US/style.css\?t=1634822082'
+                'http://localhost/static/version([0-9]+)/frontend/Magento/luma/en_US/style.css\?t=1634822082'
             ],
             'js_file_without_timestamp' => [
                 0,
@@ -70,12 +70,12 @@ class AppendTimestampToAssetUrlTest extends \PHPUnit\Framework\TestCase
             'css_file_without_timestamp' => [
                 0,
                 'style.css',
-                'http://localhost/static/version1634822211/frontend/Magento/luma/en_US/style.css'
+                'http://localhost/static/version([0-9]+)/frontend/Magento/luma/en_US/style.css'
             ],
             'image_without_timestamp' => [
                 1634822082,
                 'image.jpg',
-                'http://localhost/static/version1634822211/frontend/Magento/luma/en_US/image.jpg'
+                'http://localhost/static/version([0-9]+)/frontend/Magento/luma/en_US/image.jpg'
             ],
         ];
     }
