@@ -31,6 +31,9 @@ class RetryAssetLoadingOnError
                usleep(self::WAIT_BETWEEN_RETRY_IN_MILISECONDS*1000);
                $attempt++;
            }
+           catch(\Magento\Framework\View\Asset\File\NotFoundException $e) {
+               throw $e;
+           }
            catch(\Exception $e) {
                $this->logger->error(sprintf(
                    'Unable to load source file "%s" for merging during %d attempt, error details: %s, %s',
