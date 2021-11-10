@@ -44,7 +44,13 @@ class AppendTimestampToAssetUrlTest extends \PHPUnit\Framework\TestCase
 
         $file = $this->assetRepository->createAsset($file);
 
-        $this->assertMatchesRegularExpression(
+        /**
+         * Legacy PHPUnit version support
+         * @see https://github.com/sebastianbergmann/phpunit/issues/4086
+         */
+        $assertRegExp = method_exists($this, 'assertMatchesRegularExpression') ? 'assertMatchesRegularExpression' : 'assertRegExp';
+
+        $this->$assertRegExp(
             $this->escapeRegEx($expectedUrl),
             $file->getUrl()
         );
