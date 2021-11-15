@@ -61,32 +61,32 @@ class AppendTimestampToAssetUrlTest extends \PHPUnit\Framework\TestCase
             'js_file_with_timestamp' => [
                 1634822082,
                 'require/requirejs.js',
-                'http://localhost/static/version([0-9]+)/frontend/Magento/luma/en_US/require/requirejs.js\?t=1634822082'
+                '/static/version([0-9]+)/frontend/Magento/luma/en_US/require/requirejs.js\?t=1634822082'
             ],
             'css_file_with_timestamp' => [
                 1634822082,
                 'style.css',
-                'http://localhost/static/version([0-9]+)/frontend/Magento/luma/en_US/style.css\?t=1634822082'
+                '/static/version([0-9]+)/frontend/Magento/luma/en_US/style.css\?t=1634822082'
             ],
             'js_file_without_timestamp' => [
                 0,
                 'require/requirejs.js',
-                'http://localhost/static/version([0-9]+)/frontend/Magento/luma/en_US/require/requirejs.js'
+                '/static/version([0-9]+)/frontend/Magento/luma/en_US/require/requirejs.js'
             ],
             'css_file_without_timestamp' => [
                 0,
                 'style.css',
-                'http://localhost/static/version([0-9]+)/frontend/Magento/luma/en_US/style.css'
+                '/static/version([0-9]+)/frontend/Magento/luma/en_US/style.css'
             ],
             'image_without_timestamp' => [
                 1634822082,
                 'image.jpg',
-                'http://localhost/static/version([0-9]+)/frontend/Magento/luma/en_US/image.jpg'
+                '/static/version([0-9]+)/frontend/Magento/luma/en_US/image.jpg'
             ],
         ];
     }
 
     public function escapeRegEx($regEx) {
-        return sprintf('/^%s$/', str_replace('/', '\/', $regEx));
+        return sprintf('/%s/', str_replace('/', '\/', $regEx));
     }
 }
