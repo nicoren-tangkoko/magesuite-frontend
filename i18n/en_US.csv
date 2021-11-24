@@ -11,7 +11,7 @@ Reorder,Reorder
 "Product Listing Sort Direction","Product Listing Sort Direction"
 "Google Optimize","Google Optimize"
 "Optimize Container ID","Optimize Container ID"
-"Show order print button in customer area","Show order print button in customer area"
+'Show "Print order" button in customer area','Show "Print order" button in customer area'
 View,View
 "
                             Sets a list or a grid as the default view of products for the category.
