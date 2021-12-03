@@ -21,7 +21,7 @@
         <section id="sales">
             <group id="general">
                 <field id="show_print_button" translate="label" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1">
-                    <label>Show order print button in customer area</label>
+                    <label>Show "Print order" button in customer area</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <frontend_class>cs-csfeature__logo</frontend_class>
                 </field>
