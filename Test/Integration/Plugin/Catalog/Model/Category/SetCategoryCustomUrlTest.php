@@ -26,13 +26,24 @@ class SetCategoryCustomUrlTest extends \PHPUnit\Framework\TestCase
      * @magentoDbIsolation enabled
      * @magentoAppIsolation enabled
      * @magentoDataFixture loadCategories
+     * @magentoDataFixture loadProducts
+     * @magentoDataFixture loadPages
      */
     public function testCategoryCustomUrl()
     {
-        $categoryId = 338;
-        $category = $this->categoryRepository->get($categoryId);
+        $expectedResults = [
+            '338' => 'http://localhost/index.php/contact',
+            '339' => 'http://localhost/index.php/site1-default',
+            '340' => 'http://localhost/index.php/in-stock-product-with-qty.html',
+            '341' => 'http://localhost/index.php/contact',
+            '342' => 'http://localhost/index.php/category-with-custom-url/category-with-broken-directive.html'
+        ];
 
-        $this->assertEquals('http://localhost/index.php/contact', $category->getUrl());
+        foreach ($expectedResults as $categoryId => $expectedResult) {
+            $category = $this->categoryRepository->get($categoryId);
+
+            $this->assertEquals($expectedResult, $category->getUrl());
+        }
     }
 
     public static function loadCategories()
@@ -47,5 +58,25 @@ class SetCategoryCustomUrlTest extends \PHPUnit\Framework\TestCase
     public static function loadCategoriesRollback()
     {
         require __DIR__.'/../../../../_files/categories_rollback.php';
+    }
+
+    public static function loadPages()
+    {
+        require __DIR__.'/../../../../_files/pages.php';
+    }
+
+    public static function loadPagesRollback()
+    {
+        require __DIR__ . '/../../../../_files/pages_rollback.php';
+    }
+
+    public static function loadProducts()
+    {
+        require __DIR__ . '/../../../../_files/products.php';
+    }
+
+    public static function loadProductsRollback()
+    {
+        require __DIR__ . '/../../../../_files/products_rollback.php';
     }
 }
