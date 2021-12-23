@@ -19,6 +19,11 @@ class ProductTest extends \PHPUnit\Framework\TestCase
     private $productRepository;
 
     /**
+     * @var \Magento\Framework\Registry
+     */
+    private $registry;
+    
+    /**
      * @var \MageSuite\Frontend\Helper\Product
      */
     private $productHelper;
@@ -27,7 +32,7 @@ class ProductTest extends \PHPUnit\Framework\TestCase
     {
         $this->objectManager = \Magento\TestFramework\ObjectManager::getInstance();
         $this->productRepository = $this->objectManager->create(\Magento\Catalog\Api\ProductRepositoryInterface::class);
-
+        $this->registry = $this->objectManager->get(\Magento\Framework\Registry::class);
         $this->productHelper = $this->objectManager->get(\MageSuite\Frontend\Helper\Product::class);
     }
 
@@ -50,6 +55,8 @@ class ProductTest extends \PHPUnit\Framework\TestCase
     {
         $productId = 555;
         $product = $this->productRepository->getById($productId);
+
+        $this->registry->register('product', $product);
 
         $reviewSummary = $this->productHelper->getReviewSummary($product, true);
 
