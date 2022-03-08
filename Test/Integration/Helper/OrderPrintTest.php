@@ -7,7 +7,8 @@ namespace MageSuite\Frontend\Test\Integration\Helper;
  */
 class OrderPrintTest extends \Magento\TestFramework\TestCase\AbstractController
 {
-    const ORDER_PRINT_URL = 'sales/order/view/order_id/';
+    const ORDER_VIEW_URL = 'sales/order/view/order_id/%s';
+    const SHIPMENT_VIEW_URL = 'sales/order/shipment/order_id/%s';
 
     /**
      * @var \Magento\Customer\Model\Customer
@@ -24,13 +25,21 @@ class OrderPrintTest extends \Magento\TestFramework\TestCase\AbstractController
      */
     protected $order;
 
+    /**
+     * @var \Magento\Framework\Registry
+     */
+    protected $registry;
+
     public function setUp(): void
     {
         parent::setUp();
 
-        $this->customer = $this->_objectManager->get(\Magento\Customer\Model\Customer::class);
-        $this->customerSession = $this->_objectManager->get(\Magento\Customer\Model\Session::class);
-        $this->order = $this->_objectManager->get(\Magento\Sales\Api\Data\OrderInterface::class);
+        $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+
+        $this->customer = $objectManager->get(\Magento\Customer\Model\Customer::class);
+        $this->customerSession = $objectManager->get(\Magento\Customer\Model\Session::class);
+        $this->order = $objectManager->get(\Magento\Sales\Api\Data\OrderInterface::class);
+        $this->registry = $objectManager->get(\Magento\Framework\Registry::class);
     }
 
     /**
@@ -38,16 +47,23 @@ class OrderPrintTest extends \Magento\TestFramework\TestCase\AbstractController
      * @magentoConfigFixture current_store sales/general/show_print_button 0
      * @magentoDataFixture Magento/Sales/_files/order_with_customer.php
      */
-    public function testHiddingOrderPrintButton()
+    public function testPrintOrderButtonIsHiddenOnOrderAndShipmentPages()
     {
         $this->customerSession->setCustomerAsLoggedIn($this->getCustomer());
-
-        $this->dispatch(self::ORDER_PRINT_URL . $this->getOrderId());
-        $html = $this->getResponse()->getBody();
+        $orderViewUrl = sprintf(self::ORDER_VIEW_URL, $this->getOrderId());
+        $shipmentViewUrl = sprintf(self::SHIPMENT_VIEW_URL, $this->getOrderId());
 
         $assertNotContains = method_exists($this, 'assertStringNotContainsString') ? 'assertStringNotContainsString' : 'assertNotContains';
 
-        $this->$assertNotContains('Print Order', $html);
+        $this->dispatch($orderViewUrl);
+        $this->$assertNotContains('Print Order', $this->getResponse()->getBody());
+
+        if ($this->registry->registry('current_order')) {
+            $this->registry->unregister('current_order');
+        }
+
+        $this->dispatch($shipmentViewUrl);
+        $this->$assertNotContains('Print Order', $this->getResponse()->getBody());
     }
 
     /**
@@ -55,16 +71,23 @@ class OrderPrintTest extends \Magento\TestFramework\TestCase\AbstractController
      * @magentoConfigFixture current_store sales/general/show_print_button 1
      * @magentoDataFixture Magento/Sales/_files/order_with_customer.php
      */
-    public function testShowingOrderPrintButton()
+    public function testPrintOrderButtonIsVisibleOnOrderAndShipmentPages()
     {
         $this->customerSession->setCustomerAsLoggedIn($this->getCustomer());
-
-        $this->dispatch(self::ORDER_PRINT_URL . $this->getOrderId());
-        $html = $this->getResponse()->getBody();
+        $orderViewUrl = sprintf(self::ORDER_VIEW_URL, $this->getOrderId());
+        $shipmentViewUrl = sprintf(self::SHIPMENT_VIEW_URL, $this->getOrderId());
 
         $assertContains = method_exists($this, 'assertStringContainsString') ? 'assertStringContainsString' : 'assertContains';
 
-        $this->$assertContains('Print Order', $html);
+        $this->dispatch($orderViewUrl);
+        $this->$assertContains('Print Order', $this->getResponse()->getBody());
+
+        if ($this->registry->registry('current_order')) {
+            $this->registry->unregister('current_order');
+        }
+
+        $this->dispatch($shipmentViewUrl);
+        $this->$assertContains('Print Order', $this->getResponse()->getBody());
     }
 
     protected function getOrderId()
