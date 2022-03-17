@@ -180,4 +180,8 @@
     </type>
 
     <preference for="Magento\Sitemap\Model\Sitemap" type="MageSuite\Frontend\Model\Sitemap\Sitemap" />
+
+    <type name="Magento\Cms\Model\Block">
+        <plugin name="add_id_to_cache_keys" type="MageSuite\Frontend\Plugin\Block\Model\Block\AddIdToCacheKeys" sortOrder="10" />
+    </type>
 </config>
