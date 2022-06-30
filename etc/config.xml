@@ -20,5 +20,10 @@
                 <show_print_button>1</show_print_button>
             </general>
         </sales>
+        <seo>
+            <category>
+                <custom_url_redirection_type>302</custom_url_redirection_type>
+            </category>
+        </seo>
     </default>
 </config>

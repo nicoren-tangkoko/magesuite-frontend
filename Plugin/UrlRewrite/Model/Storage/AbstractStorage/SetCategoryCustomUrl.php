@@ -41,7 +41,7 @@ class SetCategoryCustomUrl
         $preparedCategoryCustomUrl = $this->categoryHelper->prepareCategoryCustomUrl($customUrl);
 
         $result->setTargetPath($preparedCategoryCustomUrl);
-        $result->setRedirectType(\Magento\UrlRewrite\Model\OptionProvider::TEMPORARY);
+        $result->setRedirectType($this->categoryHelper->getCustomUrlRedirectionType());
 
         if(strpos($preparedCategoryCustomUrl, 'http') !== false){
             $result->setEntityType('custom');
