@@ -2,13 +2,15 @@
 
 namespace MageSuite\Frontend\Helper;
 
-class Category extends \Magento\Framework\App\Helper\AbstractHelper
+class Category
 {
     const CACHE_LIFETIME = 86400;
     const CACHE_TAG = 'layered_navigation_tree_%s_%s_%s';
 
     const CATEGORY_CUSTOM_URL = 'category_custom_url';
     const CATEGORY_TOP_LEVEL = 2;
+
+    const XML_PATH_SEO_CATEGORY_CUSTOM_URL_REDIRECTION_TYPE = 'seo/category/custom_url_redirection_type';
 
     /**
      * @var \Magento\Framework\Registry
@@ -60,6 +62,8 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
      */
     protected $categoryIconHelper;
 
+    protected \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig;
+
     /**
      * @var \Magento\Catalog\Model\CategoryFactory
      */
@@ -78,6 +82,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
         \Magento\Eav\Model\Config $eavConfig,
         \MageSuite\CategoryIcon\Helper\CategoryIcon $categoryIconHelper,
+        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Catalog\Model\CategoryFactory $categoryFactory = null
     ) {
         $this->registry = $registry;
@@ -90,8 +95,20 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         $this->categoryRepository = $categoryRepository;
         $this->eavConfig = $eavConfig;
         $this->categoryIconHelper = $categoryIconHelper;
+        $this->scopeConfig = $scopeConfig;
         $this->categoryFactory = $categoryFactory
             ?? \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Catalog\Model\CategoryFactory::class);
+    }
+
+    public function getCustomUrlRedirectionType(): int
+    {
+        $value = (int)$this->scopeConfig->getValue(self::XML_PATH_SEO_CATEGORY_CUSTOM_URL_REDIRECTION_TYPE);
+
+        if (empty($value)) {
+            return \Magento\UrlRewrite\Model\OptionProvider::TEMPORARY;
+        }
+
+        return $value;
     }
 
     public function getCategoryNode($category = null, $returnCurrent = false)
