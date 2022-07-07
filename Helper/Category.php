@@ -2,7 +2,7 @@
 
 namespace MageSuite\Frontend\Helper;
 
-class Category
+class Category extends \Magento\Framework\App\Helper\AbstractHelper
 {
     const CACHE_LIFETIME = 86400;
     const CACHE_TAG = 'layered_navigation_tree_%s_%s_%s';
@@ -62,8 +62,6 @@ class Category
      */
     protected $categoryIconHelper;
 
-    protected \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig;
-
     /**
      * @var \Magento\Catalog\Model\CategoryFactory
      */
@@ -72,6 +70,7 @@ class Category
     protected $rootCategoryId;
 
     public function __construct(
+        \Magento\Framework\App\Helper\Context $context,
         \Magento\Framework\Registry $registry,
         \MageSuite\Frontend\Model\Category\Tree $categoryTree,
         \MageSuite\ContentConstructorFrontend\DataProviders\ProductCarouselDataProvider $productDataProvider,
@@ -82,9 +81,10 @@ class Category
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
         \Magento\Eav\Model\Config $eavConfig,
         \MageSuite\CategoryIcon\Helper\CategoryIcon $categoryIconHelper,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
         \Magento\Catalog\Model\CategoryFactory $categoryFactory = null
     ) {
+        parent::__construct($context);
+
         $this->registry = $registry;
         $this->categoryTree = $categoryTree;
         $this->productDataProvider = $productDataProvider;
@@ -95,7 +95,6 @@ class Category
         $this->categoryRepository = $categoryRepository;
         $this->eavConfig = $eavConfig;
         $this->categoryIconHelper = $categoryIconHelper;
-        $this->scopeConfig = $scopeConfig;
         $this->categoryFactory = $categoryFactory
             ?? \Magento\Framework\App\ObjectManager::getInstance()->get(\Magento\Catalog\Model\CategoryFactory::class);
     }

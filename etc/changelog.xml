@@ -16,6 +16,12 @@
                     <overview>[IPET-1384] Allow setting redirection type for custom category URL</overview>
                 </entry>
             </tag>
+            <tag version="3.2.8" date="2022-07-07">
+                <entry>
+                    <type>FIX</type>
+                    <overview>[IPET-1384] Fix category helper</overview>
+                </entry>
+            </tag>
         </changelog>
     </module>
 </config>
