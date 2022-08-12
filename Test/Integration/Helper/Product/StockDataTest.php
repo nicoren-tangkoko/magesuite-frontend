@@ -54,7 +54,7 @@ class StockDataTest extends \PHPUnit\Framework\TestCase
 
         $expected = [
             'in_stock_with_qty' => ['stock' => true, 'qty' => 100],
-            'in_stock_without_qty' => ['stock' => false, 'qty' => 0],
+            'in_stock_without_qty' => ['stock' => true, 'qty' => 0],
             'out_of_stock_with_qty' => ['stock' => false, 'qty' => 100]
         ];
 
