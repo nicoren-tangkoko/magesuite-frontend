@@ -5,9 +5,9 @@
   "homepage": "https://creativestyle.de",
   "license": "OSL-3.0",
   "require": {
-    "php": "~5.5.0|~5.6.0|~7.0.0|~7.1.0",
+    "php": "~5.5.0|~5.6.0|~7.0.0|~7.1.0|~8.0.0|~8.1.0",
     "twig/twig": "1.33",
-    "ps/image-optimizer": "~1.0"
+    "ps/image-optimizer": "~2.0"
   },
   "autoload": {
     "files": [ "registration.php" ],
