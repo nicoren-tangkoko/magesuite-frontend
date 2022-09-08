@@ -2,6 +2,8 @@
 
 namespace MageSuite\Frontend\Helper;
 
+use MageSuite\ContentConstructorFrontend\DataProviders\ProductCarouselDataProvider;
+
 class Category extends \Magento\Framework\App\Helper\AbstractHelper
 {
     const CACHE_LIFETIME = 86400;
@@ -18,7 +20,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     protected $categoryTree;
 
     /**
-     * @var \MageSuite\ContentConstructor\Components\ProductCarousel\DataProvider
+     * @var ProductCarouselDataProvider
      */
     protected $productDataProvider;
 
@@ -55,15 +57,14 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     public function __construct(
         \Magento\Framework\Registry $registry,
         \MageSuite\Frontend\Model\Category\Tree $categoryTree,
-        \MageSuite\ContentConstructor\Components\ProductCarousel\DataProvider $productDataProvider,
+        ProductCarouselDataProvider $productDataProvider,
         \Magento\Framework\Json\DecoderInterface $jsonDecoder,
         \Magento\Framework\App\CacheInterface $cache,
         \Magento\Store\Model\StoreManagerInterface $storeManager,
         \Magento\Catalog\Model\ResourceModel\Category $categoryResource,
         \Magento\Catalog\Api\CategoryRepositoryInterface $categoryRepository,
         \Magento\Eav\Model\Config $eavConfig
-    )
-    {
+    ) {
         $this->registry = $registry;
         $this->categoryTree = $categoryTree;
         $this->productDataProvider = $productDataProvider;
@@ -96,7 +97,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
                 'only_included_in_menu' => 0
             ];
 
-            $categoryTreeId = ($returnCurrent OR $category->getLevel() == 2) ? $category->getId() : $category->getParentId();
+            $categoryTreeId = ($returnCurrent or $category->getLevel() == 2) ? $category->getId() : $category->getParentId();
             $categoryNode = $this->categoryTree->getCategoryTree($configuration, $categoryTreeId);
 
             $this->cache->save(serialize($categoryNode), $cacheTag, ['layered_navigation_tree'], self::CACHE_LIFETIME);
@@ -115,12 +116,12 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $featuredProducts = $category->getFeaturedProducts();
 
-        if($featuredProducts == '{}'){
+        if ($featuredProducts == '{}') {
             $featuredProducts = $this->categoryResource
                 ->getAttributeRawValue($category->getId(), 'featured_products', 0);
         }
 
-        if(!$featuredProducts OR $featuredProducts == '{}'){
+        if (!$featuredProducts or $featuredProducts == '{}') {
             return [];
         }
 
@@ -131,7 +132,7 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
     {
         $featuredProductsIds = $this->getFeaturedProductsIds($category);
 
-        if(empty($featuredProductsIds)){
+        if (empty($featuredProductsIds)) {
             return [];
         }
 
@@ -143,11 +144,11 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
 
     public function prepareCategoryCustomUrl($customUrl)
     {
-        if(!$customUrl){
+        if (!$customUrl) {
             return null;
         }
 
-        if(strpos($customUrl, 'http') !== false){
+        if (strpos($customUrl, 'http') !== false) {
             return $customUrl;
         }
 
@@ -163,12 +164,12 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         if ($image) {
             if (is_string($image)) {
                 $url = $this->storeManager->getStore()->getBaseUrl(
-                        \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
-                    ) . 'catalog/category/' . $image;
+                    \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
+                ) . 'catalog/category/' . $image;
             } elseif (is_array($image) && isset($image[0]) && isset($image[0]['name'])) {
                 $url = $this->storeManager->getStore()->getBaseUrl(
-                        \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
-                    ) . 'catalog/category/' . $image[0]['name'];
+                    \Magento\Framework\UrlInterface::URL_TYPE_MEDIA
+                ) . 'catalog/category/' . $image[0]['name'];
             } else {
                 throw new \Magento\Framework\Exception\LocalizedException(
                     __('Something went wrong while getting the image url.')
@@ -211,3 +212,4 @@ class Category extends \Magento\Framework\App\Helper\AbstractHelper
         return $view->getValue();
     }
 }
+
