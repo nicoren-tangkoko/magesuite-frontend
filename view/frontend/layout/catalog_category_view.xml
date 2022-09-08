@@ -2,11 +2,11 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="2columns-left" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Magento\Catalog\Block\Product\ListProduct" name="category.products.list" as="product_list">
+            <referenceBlock name="category.products.list">
                 <action method="setDefaultDirection">
                     <argument name="dir" xsi:type="helper" helper="MageSuite\Frontend\Helper\Category\View::getSortDirection"/>
                 </action>
-            </block>
+            </referenceBlock>
         </referenceContainer>
     </body>
 </page>
