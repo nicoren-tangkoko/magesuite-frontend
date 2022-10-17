@@ -95,9 +95,14 @@ class Product extends \Magento\Framework\App\Helper\AbstractHelper
         $newsFromDate = $product->getNewsFromDate();
         $newsToDate = $product->getNewsToDate();
         $date = $date ?: date('Y-m-d');
-
-        $fromTimestamp = strtotime($newsFromDate);
-        $toTimestamp = strtotime($newsToDate);
+        $fromTimestamp = null;
+        $newsToDate = null;
+        if($newsToDate){
+            $fromTimestamp = strtotime($newsFromDate);
+        }
+        if($newsToDate){
+            $toTimestamp = strtotime($newsToDate);
+        }
         $dateTimestamp = strtotime($date);
 
         if (!$fromTimestamp && !$toTimestamp) {
