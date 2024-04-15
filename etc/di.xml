@@ -22,7 +22,6 @@
     </type>
 
     <type name="Magento\Cms\Model\Wysiwyg\Images\Storage">
-        <plugin name="optimize_wysiwyg_image" type="MageSuite\Frontend\Plugin\OptimizeWysiwygImage" sortOrder="10"/>
         <plugin name="resize_wysiwyg_image" type="MageSuite\Frontend\Plugin\ResizeWysiwygImage" sortOrder="20"/>
     </type>
 
