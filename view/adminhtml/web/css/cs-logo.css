@@ -39,3 +39,14 @@ button.cs-csfeature__logo span:first-child {
     position: relative;
     padding-left: 2.5rem;
 }
+
+.admin__menu [data-ui-id^='menu-magesuite-'] .submenu-group-title span:before {
+    background: url('../images/magesuite-icon.svg') no-repeat 0 1px;
+    content: '';
+    display: inline-block;
+    height: 20px;
+    width: 18px;
+    margin-right: 8px;
+    vertical-align: top;
+    filter: brightness(0) invert(1);
+}
