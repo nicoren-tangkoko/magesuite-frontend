@@ -87,7 +87,7 @@
             <tag version="3.5.8" date="2024-05-24">
                 <entry>
                     <type>FEATURE</type>
-                    <overview>Add MGS icons in admin panel (mneu) for MGS features</overview>
+                    <overview>Add MGS icons in admin panel for MGS features</overview>
                     <ticket_id>IPET-482</ticket_id>
                 </entry>
             </tag>
