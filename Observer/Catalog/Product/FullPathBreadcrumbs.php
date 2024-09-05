@@ -39,10 +39,14 @@ class FullPathBreadcrumbs implements \Magento\Framework\Event\ObserverInterface
 
         $category = $this->breadcrumbCategoryFinder->getCategory($product);
 
-        if ($category === null || $category->getId() === null) {
+        if ($category === null) {
             return;
         }
 
-        $this->registry->register('current_category', $category, true);
+        if ($this->registry->registry('current_category')) {
+            $this->registry->unregister('current_category');
+        }
+
+        $this->registry->register('current_category', $category);
     }
 }
