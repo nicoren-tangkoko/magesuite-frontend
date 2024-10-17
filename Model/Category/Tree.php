@@ -157,14 +157,15 @@ class Tree
     {
         $categoryCollection = $this->categoryCollectionFactory->create();
 
-        $categoryCollection->addFieldToFilter('is_active', 1);
+        $categoryCollection->addIsActiveFilter();
         $categoryCollection->setOrder('position');
 
-        if (isset($configuration['only_included_in_menu']) && $configuration['only_included_in_menu']) {
+        if (!empty($configuration['only_included_in_menu'])) {
             $categoryCollection->addFieldToFilter('include_in_menu', 1);
         }
 
-        $categoryCollection->addAttributeToSelect('*');
+        $categoryCollection->addUrlRewriteToResult();
+        $categoryCollection->addNameToResult();
 
         return $categoryCollection;
     }
