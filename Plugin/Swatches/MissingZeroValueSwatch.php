@@ -2,8 +2,6 @@
 
 namespace MageSuite\Frontend\Plugin\Swatches;
 
-use Magento\Swatches\Model\Swatch;
-
 class MissingZeroValueSwatch
 {
     /**
@@ -20,6 +18,7 @@ class MissingZeroValueSwatch
      */
     protected $swatchCollectionFactory;
 
+    protected $swatchesCache = [];
 
     public function __construct(
         \Magento\Store\Model\StoreManagerInterface $storeManager,
@@ -33,32 +32,38 @@ class MissingZeroValueSwatch
     {
         /**
          * Core method contains bug which do not allow to add swatches with zero value.
-         * Modification on line 39:
+         * Modification on line 52:
          * Change:
          * $item['value'] != null
          */
+        $swatches = $this->getCachedSwatches($optionIds);
 
-        /** @var \Magento\Swatches\Model\ResourceModel\Swatch\Collection $swatchCollection */
-        $swatchCollection = $this->swatchCollectionFactory->create();
-        $swatchCollection->addFilterByOptionsIds($optionIds);
+        if (count($swatches) !== count($optionIds)) {
+            $swatchOptionIds = array_diff($optionIds, array_keys($swatches));
+            /** @var \Magento\Swatches\Model\ResourceModel\Swatch\Collection $swatchCollection */
+            $swatchCollection = $this->swatchCollectionFactory->create();
+            $swatchCollection->addFilterByOptionsIds($swatchOptionIds);
 
-        $swatches = [];
-        $currentStoreId = $this->storeManager->getStore()->getId();
-        foreach ($swatchCollection as $item) {
-            if ($item['type'] != Swatch::SWATCH_TYPE_TEXTUAL) {
-                $swatches[$item['option_id']] = $item->getData();
-            } elseif ($item['store_id'] == $currentStoreId && $item['value'] != null) {
-                $fallbackValues[$item['option_id']][$currentStoreId] = $item->getData();
-            } elseif ($item['store_id'] == self::DEFAULT_STORE_ID) {
-                $fallbackValues[$item['option_id']][self::DEFAULT_STORE_ID] = $item->getData();
+            $swatches = [];
+            $currentStoreId = $this->storeManager->getStore()->getId();
+            foreach ($swatchCollection as $item) {
+                if ($item['type'] != \Magento\Swatches\Model\Swatch::SWATCH_TYPE_TEXTUAL) {
+                    $swatches[$item['option_id']] = $item->getData();
+                } elseif ($item['store_id'] == $currentStoreId && $item['value'] != null) {
+                    $fallbackValues[$item['option_id']][$currentStoreId] = $item->getData();
+                } elseif ($item['store_id'] == self::DEFAULT_STORE_ID) {
+                    $fallbackValues[$item['option_id']][self::DEFAULT_STORE_ID] = $item->getData();
+                }
             }
+
+            if (!empty($fallbackValues)) {
+                $swatches = $this->addFallbackOptions($fallbackValues, $swatches);
+            }
+
+            $this->setCachedSwatches($swatchOptionIds, $swatches);
         }
 
-        if (!empty($fallbackValues)) {
-            $swatches = $this->addFallbackOptions($fallbackValues, $swatches);
-        }
-
-        return $swatches;
+        return array_filter($this->getCachedSwatches($optionIds));
     }
 
     /**
@@ -78,5 +83,17 @@ class MissingZeroValueSwatch
         }
 
         return $swatches;
+    }
+
+    protected function getCachedSwatches(array $optionIds)
+    {
+        return array_intersect_key($this->swatchesCache, array_combine($optionIds, $optionIds));
+    }
+
+    protected function setCachedSwatches(array $optionIds, array $swatches)
+    {
+        foreach ($optionIds as $optionId) {
+            $this->swatchesCache[$optionId] = $swatches[$optionId] ?? null;
+        }
     }
 }
