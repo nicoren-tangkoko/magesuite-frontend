@@ -6,8 +6,8 @@ namespace MageSuite\Frontend\Plugin;
 class SortAttributeOptions
 {
     protected ?array $items = null;
-
     protected ?array $sortedItems = null;
+    protected array $options = [];
 
     protected \Magento\Framework\App\ResourceConnection $resource;
 
@@ -32,17 +32,7 @@ class SortAttributeOptions
         }
 
         $items = $this->items[$productId][$attributeId];
-        $connection = $this->resource->getConnection();
-        $select = $connection->select()->from(
-            ['attribute_opt' => $this->resource->getTableName('eav_attribute_option')],
-            ['option_id', 'sort_order']
-        )->where(
-            'attribute_opt.attribute_id = ?',
-            $superAttribute->getAttributeId()
-        )->order(
-            'attribute_opt.sort_order ASC'
-        );
-        $sortOrder = array_flip(array_keys($connection->fetchPairs($select)));
+        $sortOrder = array_flip(array_keys($this->getOptions((int)$superAttribute->getAttributeId())));
 
         if (empty($sortOrder)) {
             $this->sortedItems[$productId][$attributeId] = $items;
@@ -61,5 +51,26 @@ class SortAttributeOptions
 
         $this->sortedItems[$productId][$attributeId] = $items;
         return $items;
+    }
+
+    protected function getOptions(int $attributeId): array
+    {
+        if (array_key_exists($attributeId, $this->options)) {
+            return $this->options[$attributeId];
+        }
+
+        $connection = $this->resource->getConnection();
+        $select = $connection->select()->from(
+            ['attribute_opt' => $this->resource->getTableName('eav_attribute_option')],
+            ['option_id', 'sort_order']
+        )->where(
+            'attribute_opt.attribute_id = ?',
+            $attributeId
+        )->order(
+            'attribute_opt.sort_order ASC'
+        );
+        $this->options[$attributeId] = $connection->fetchPairs($select);
+
+        return $this->options[$attributeId];
     }
 }
