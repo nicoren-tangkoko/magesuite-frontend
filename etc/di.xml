@@ -161,4 +161,8 @@
     <type name="Magento\Cms\Model\Block">
         <plugin name="add_id_to_cache_keys" type="MageSuite\Frontend\Plugin\Block\Model\Block\AddIdToCacheKeys" sortOrder="10" />
     </type>
+
+    <type name="Magento\Version\Controller\Index\Index">
+        <plugin name="redirect_magento_version" type="MageSuite\Frontend\Plugin\Magento\Version\Controller\Index\Index\RedirectMagentoVersion" sortOrder="100"/>
+    </type>
 </config>
