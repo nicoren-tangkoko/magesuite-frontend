@@ -15,8 +15,6 @@
 
     <preference for="Magento\CatalogUrlRewrite\Model\CategoryUrlRewriteGenerator" type="MageSuite\Frontend\Model\CategoryUrlRewriteGenerator"/>
 
-    <preference for="Magento\Sitemap\Model\Sitemap" type="MageSuite\Frontend\Model\Sitemap\Sitemap" />
-
     <type name="Magento\Catalog\Model\Category\Attribute\Backend\Image">
         <plugin name="resize_category_image_teaser" type="MageSuite\Frontend\Plugin\ResizeCategoryImageTeaser" sortOrder="10"/>
     </type>
