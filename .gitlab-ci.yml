@@ -1,11 +1,2 @@
-stages:
-  - build
-  - codesniffer
-
 include:
-    - project: 'mageops/gitlab-ci-templates'
-      ref: master
-      file: 'composer-package.yml'
-    - project: 'magesuite/gitlab-ci-config'
-      ref: 'master'
-      file: 'magesuite-module.yml'
+- local: .gitlab/csbot.gitlabci.yml
