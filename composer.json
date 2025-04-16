@@ -15,6 +15,6 @@
     }
   },
   "replace":{
-  	"creativestyle/magesuite-frontend":"3.0.0"
+  	"creativestyle/magesuite-frontend":"3.*"
   }
 }
